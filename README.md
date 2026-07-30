@@ -1,7 +1,7 @@
 # QuantumGuard
 A platform for quantum readiness assurance, vulnerability scanning, and compliance maturity.
 
-Live Preview: [https://social-482013.web.app](https://social-482013.web.app)
+Live Preview : [https://social-482013.web.app](https://social-482013.web.app)
 
 ## Table of Contents
 - [Key Features](#key-features)
