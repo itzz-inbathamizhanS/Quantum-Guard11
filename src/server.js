@@ -3,7 +3,10 @@ import cors from 'cors';
 import { GoogleGenAI } from '@google/genai';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 import { saveResult, getLeaderboard } from './leaderboard.js';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -154,7 +157,7 @@ app.post('/api/chat', async (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
 
     const responseStream = await ai.models.generateContentStream({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-flash-latest',
       contents: contents,
       config: {
         systemInstruction: SYSTEM_PROMPT
