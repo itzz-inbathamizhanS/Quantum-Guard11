@@ -160,3 +160,5 @@ database.json
 # Bun
 bun.lockb
 bun.lock
+
+node_dir/
