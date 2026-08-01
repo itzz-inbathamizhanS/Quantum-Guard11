@@ -1027,7 +1027,10 @@ const Scanner = (function() {
           body: JSON.stringify({ message, reportContext, history })
         });
 
-        if (!response.ok) throw new Error('Failed to connect to AI Advisor');
+        if (!response.ok) {
+          const errMsg = await response.text();
+          throw new Error(errMsg || 'Failed to connect to AI Advisor');
+        }
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();

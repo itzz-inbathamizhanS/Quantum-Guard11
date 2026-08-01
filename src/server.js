@@ -5,6 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { saveResult, getLeaderboard } from './leaderboard.js';
+// P-07: Import scanner and subdomains at top-level (ESM caches them anyway)
+import { runDetailedTLSScan } from './scanner.js';
+import { findSubdomains } from './subdomains.js';
 
 dotenv.config();
 
@@ -15,13 +18,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const SYSTEM_PROMPT = `You are QuantumGuard Security Advisor, a Senior Security Engineer specializing in TLS/SSL configurations, post-quantum cryptography (PQC), and web PKI.
+const SYSTEM_PROMPT = `You are QuantumGuard AI Security Advisor—a warm, highly accurate, and collaborative Senior Security Engineer. Your goal is to accompany the user on their journey to secure their infrastructure against both classical and quantum threats.
 
 RULES:
+- Act as a trusted companion: be encouraging, empathetic, and collaborative. Use language like "Let's fix this together" or "We can improve this score by..."
+- Be flawlessly accurate: base your advice strictly on the provided scan report. Do not hallucinate vulnerabilities that aren't in the report.
 - You ONLY discuss the provided scan report and general web/TLS security topics.
-- If the user asks about anything unrelated (cooking, games, coding unrelated to security), politely decline: "I'm specialized in analyzing your QuantumGuard scan results. Let's focus on securing your infrastructure!"
+- If the user asks about anything unrelated, gently pivot back: "As your security companion, I'm uniquely tuned to analyze your QuantumGuard scan results. Let's focus on securing your infrastructure!"
 - Always reference specific findings from the report (hostnames, cipher suites, scores) when giving advice.
-- Provide step-by-step remediation with exact config snippets (Nginx, Apache, HAProxy) when applicable.
+- Provide step-by-step remediation with exact, accurate config snippets (Nginx, Apache, HAProxy) when applicable.
 - Use markdown formatting: headers, bold, code blocks, numbered lists.
 - Be concise but thorough. Prioritize critical vulnerabilities first.`;
 
@@ -38,34 +43,40 @@ app.post('/api/subdomains', async (req, res) => {
     const { hostname } = req.body;
     if (!hostname) return res.status(400).json({ error: 'hostname required' });
 
-    const { findSubdomains } = await import('./subdomains.js');
     let subdomainsList = await findSubdomains(hostname);
     
     if (subdomainsList.length === 0) {
       subdomainsList.push(`www.${hostname}`, `api.${hostname}`);
     }
 
-    subdomainsList = subdomainsList.slice(0, 15);
-    
-    const leaderData = getLeaderboard();
-    const { runDetailedTLSScan } = await import('./scanner.js');
+    subdomainsList = subdomainsList.slice(0, 500);
 
-    await Promise.all(subdomainsList.map(async (sub) => {
-      if (!leaderData.find(d => d.domain === sub)) {
-        try {
-          const result = await runDetailedTLSScan(sub, 443, false);
-          const score = result.quantum_score || 0;
-          const maturity = score >= 90 ? 'Quantum Secure' : score >= 70 ? 'PQC Transitioning' : score >= 50 ? 'Classic Secure' : 'Legacy / Vulnerable';
-          saveResult(sub, {
-            domain: sub,
-            score: score,
-            maturity_level: maturity,
-            timestamp: result.timestamp,
-            report: result
-          });
-        } catch(e) {}
-      }
-    }));
+    // P-02: Reduced batch size to 10 to prevent socket exhaustion on Windows
+    const batchSize = 10;
+    for (let i = 0; i < subdomainsList.length; i += batchSize) {
+      // C-06: Re-read leaderboard each batch to avoid stale cache / duplicate scans
+      const leaderData = getLeaderboard();
+      const batch = subdomainsList.slice(i, i + batchSize);
+      await Promise.all(batch.map(async (sub) => {
+        if (!leaderData.find(d => d.domain === sub)) {
+          try {
+            const result = await runDetailedTLSScan(sub, 443, false);
+            const score = result.quantum_score || 0;
+            const maturity = result.status === 'failed' ? 'Failed' : (score >= 90 ? 'Quantum Secure' : score >= 70 ? 'PQC Transitioning' : score >= 50 ? 'Classic Secure' : 'Legacy / Vulnerable');
+            saveResult(sub, {
+              domain: sub,
+              score: score,
+              maturity_level: maturity,
+              timestamp: result.timestamp,
+              report: result
+            });
+          } catch(e) {
+            // C-04: Log scan failures instead of silently swallowing
+            console.error(`[Scan] Failed to scan subdomain ${sub}:`, e.message);
+          }
+        }
+      }));
+    }
 
     const updatedLeaderData = getLeaderboard();
     
@@ -86,6 +97,7 @@ app.post('/api/subdomains', async (req, res) => {
       subdomains: formattedSubdomains
     });
   } catch (err) {
+    console.error('[API] /api/subdomains error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -95,13 +107,11 @@ app.post('/api/scan', async (req, res) => {
     const { hostname, port = 443, deep = false } = req.body;
     if (!hostname) return res.status(400).json({ error: 'hostname required' });
     
-    // Import dynamically so it works if file was just created
-    const { runDetailedTLSScan } = await import('./scanner.js');
     const result = await runDetailedTLSScan(hostname, port, deep);
     
     // Save to local JSON db
     const score = result.quantum_score || 0;
-    const maturity = score >= 90 ? 'Quantum Secure' : score >= 70 ? 'PQC Transitioning' : score >= 50 ? 'Classic Secure' : 'Legacy / Vulnerable';
+    const maturity = result.status === 'failed' ? 'Failed' : (score >= 90 ? 'Quantum Secure' : score >= 70 ? 'PQC Transitioning' : score >= 50 ? 'Classic Secure' : 'Legacy / Vulnerable');
     saveResult(hostname, {
       domain: hostname,
       score: score,
@@ -112,6 +122,7 @@ app.post('/api/scan', async (req, res) => {
     
     res.json(result);
   } catch (err) {
+    console.error('[API] /api/scan error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -125,7 +136,8 @@ app.post('/api/chat', async (req, res) => {
     const { message, reportContext, history } = req.body;
     
     if (!process.env.GEMINI_API_KEY) {
-      return res.status(500).send("[ERROR] GEMINI_API_KEY environment variable is not set.");
+      // U-07: Return a user-friendly error message
+      return res.status(500).send("I'm sorry, the AI advisor is currently unavailable. Please ensure the server is configured with a valid API key and try again.");
     }
 
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -157,7 +169,7 @@ app.post('/api/chat', async (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
 
     const responseStream = await ai.models.generateContentStream({
-      model: 'gemini-flash-latest',
+      model: 'gemini-1.5-flash',
       contents: contents,
       config: {
         systemInstruction: SYSTEM_PROMPT
@@ -178,9 +190,11 @@ app.post('/api/chat', async (req, res) => {
 });
 
 // Serve frontend static files
+app.use('/docs', express.static(path.join(__dirname, '../docs')));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Fallback for SPA routing if needed (though it looks like standard HTML pages)
+// I-05: Standard Express 5 catch-all syntax
 app.get('*all', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });

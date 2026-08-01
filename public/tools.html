@@ -15,7 +15,6 @@
     rel="stylesheet" />
   <link href="shared.css" rel="stylesheet" />
   <script src="scanner-engine.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- Tailwind config loaded from shared tailwind-config.js -->
   <style>
     .material-symbols-outlined {
@@ -56,8 +55,50 @@
       }
 
       50% {
-        opacity: 0.5;
+        opacity: 0.5;      const printWindow = window.open('', '_blank');
+      if (!printWindow) { 
+        alert('Please allow popups to generate the PDF report.'); 
+        return; 
       }
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>QuantumGuard_CBOM_${new Date().getTime()}</title>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Grotesk:wght@700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+            <style>
+              body { 
+                margin: 0; 
+                background: #020817; 
+                display: flex; 
+                justify-content: center; 
+                padding: 40px; 
+                min-height: 100vh;
+              }
+              .page-container { 
+                box-shadow: 0 0 50px rgba(0,0,0,0.8); 
+                transform-origin: top center;
+              }
+              @media print {
+                body { background: #041329 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; display: block; }
+                .page-container { box-shadow: none !important; }
+                .no-print { display: none !important; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="no-print" style="position:fixed;top:20px;right:20px;z-index:999;">
+              <button onclick="window.print()" style="background:#00DBE9;color:#041329;border:none;padding:12px 24px;font-weight:900;font-family:'Space Grotesk',sans-serif;font-size:14px;cursor:pointer;letter-spacing:2px;box-shadow:0 0 15px rgba(0,219,233,0.3);">PRINT / SAVE PDF</button>
+            </div>
+            <div class="page-container">
+              ${html}
+            </div>
+            <script>
+              window.onload = () => { setTimeout(() => { window.print(); }, 500); };
+            </script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
     }
 
     .finding-row {
@@ -72,8 +113,50 @@
 
       to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateX(0);      const printWindow = window.open('', '_blank');
+      if (!printWindow) { 
+        alert('Please allow popups to generate the PDF report.'); 
+        return; 
       }
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>QuantumGuard_CBOM_${new Date().getTime()}</title>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Grotesk:wght@700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+            <style>
+              body { 
+                margin: 0; 
+                background: #020817; 
+                display: flex; 
+                justify-content: center; 
+                padding: 40px; 
+                min-height: 100vh;
+              }
+              .page-container { 
+                box-shadow: 0 0 50px rgba(0,0,0,0.8); 
+                transform-origin: top center;
+              }
+              @media print {
+                body { background: #041329 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; display: block; }
+                .page-container { box-shadow: none !important; }
+                .no-print { display: none !important; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="no-print" style="position:fixed;top:20px;right:20px;z-index:999;">
+              <button onclick="window.print()" style="background:#00DBE9;color:#041329;border:none;padding:12px 24px;font-weight:900;font-family:'Space Grotesk',sans-serif;font-size:14px;cursor:pointer;letter-spacing:2px;box-shadow:0 0 15px rgba(0,219,233,0.3);">PRINT / SAVE PDF</button>
+            </div>
+            <div class="page-container">
+              ${html}
+            </div>
+            <script>
+              window.onload = () => { setTimeout(() => { window.print(); }, 500); };
+            </script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
     }
 
     .tab-active {
@@ -101,7 +184,6 @@
         <a class="text-[#00D4FF] border-b-2 border-[#00D4FF] pb-1 font-bold" href="tools.html">Scanner</a>
         <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="leaderboard.html">Leaderboard</a>
         <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="docs.html">Docs</a>
-        <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="about.html">About</a>
       </div>
     </div>
     <div class="flex items-center gap-4">
@@ -279,8 +361,21 @@
             <div class="flex gap-2 mb-3">
               <input id="tlsHost" type="text" placeholder="e.g. www.example.com"
                 class="flex-1 bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-3 text-sm text-on-surface focus:outline-none focus:border-primary" />
-              <input id="tlsPort" type="number" value="443" min="1" max="65535"
-                class="w-20 bg-surface-container-low border border-outline-variant/30 rounded-lg px-3 py-3 text-sm text-center text-on-surface focus:outline-none focus:border-primary" />
+              <div class="relative w-40">
+                <select id="tlsPort"
+                  class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg pl-3 pr-8 py-3 text-sm text-on-surface focus:outline-none focus:border-primary appearance-none cursor-pointer">
+                  <option value="443">443 (HTTPS)</option>
+                  <option value="8443">8443 (Alt HTTPS)</option>
+                  <option value="465">465 (SMTPS)</option>
+                  <option value="993">993 (IMAPS)</option>
+                  <option value="995">995 (POP3S)</option>
+                  <option value="636">636 (LDAPS)</option>
+                  <option value="3389">3389 (RDP)</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[16px]">expand_more</span>
+                </div>
+              </div>
             </div>
             <button onclick="runSSLyzeScan()" id="tlsScanBtn"
               class="w-full py-3 bg-gradient-to-r from-secondary to-secondary-container text-on-secondary rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-all">
@@ -681,34 +776,37 @@
 
     function renderSubdomainPanel(container, parentDomain, subdomains) {
       const count = subdomains.length;
-      const activeCount = subdomains.filter(s => s.score > 0).length;
+      const activeCount = subdomains.filter(s => s.score > 0 || s.score === -1).length;
       const rows = subdomains.map((s, idx) => {
         const score = s.score || 0;
-        const isScanned = score > 0;
-        const color = isScanned ? (score >= 80 ? '#10B981' : score >= 50 ? '#F59E0B' : '#F43F5E') : '#859398';
-        const maturity = isScanned ? (s.maturity_level || (score >= 90 ? 'Quantum Secure' : score >= 70 ? 'PQC Transitioning' : score >= 50 ? 'Classic Secure' : 'Legacy / Vulnerable')) : 'Unscanned';
+        const isFailed = score === -1;
+        const isScanned = score > 0 || isFailed;
+        const color = isFailed ? '#EF4444' : (score > 0 ? (score >= 80 ? '#10B981' : score >= 50 ? '#F59E0B' : '#F43F5E') : '#859398');
+        const maturity = isFailed ? 'Failed' : (score > 0 ? (s.maturity_level || (score >= 90 ? 'Quantum Secure' : score >= 70 ? 'PQC Transitioning' : score >= 50 ? 'Classic Secure' : 'Legacy / Vulnerable')) : 'Unscanned');
+        const displayScore = isFailed ? 'ERR' : (score > 0 ? score : '-');
+        const progressWidth = isFailed ? 100 : (score > 0 ? score : 0);
         const ip = s.report?.ip_address || '—';
         const scanDuration = s.report?.scan_duration ? s.report.scan_duration + 's' : '—';
         return `<tr class="hover:bg-surface-container-high/40 transition-colors finding-row" style="animation-delay:${idx * 0.05}s">
           <td class="px-4 py-3 text-xs">
             <div class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full" style="background:${color};box-shadow:0 0 6px ${color}"></span>
-              <span class="font-mono font-bold text-on-surface">${s.domain || s.id}</span>
+              <span class="font-mono font-bold text-on-surface">${s.domain || s.id || s.name}</span>
             </div>
           </td>
           <td class="px-4 py-3 text-xs font-mono text-on-surface-variant/70">${ip}</td>
           <td class="px-4 py-3">
             <div class="flex items-center gap-2">
               <div class="w-16 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-                <div class="h-full rounded-full transition-all" style="width:${isScanned ? score : 0}%;background:${color}"></div>
+                <div class="h-full rounded-full transition-all" style="width:${progressWidth}%;background:${color}"></div>
               </div>
-              <span class="font-mono text-xs font-black" style="color:${color}">${isScanned ? score : '-'}</span>
+              <span class="font-mono text-xs font-black" style="color:${color}">${displayScore}</span>
             </div>
           </td>
           <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider" style="background:${color}15;color:${color};border:1px solid ${color}30">${maturity}</span></td>
           <td class="px-4 py-3 text-xs font-mono text-on-surface-variant/50">${scanDuration}</td>
           <td class="px-4 py-3 text-right">
-             <button onclick="window.scanSubdomain('${s.domain || s.id}')" class="px-3 py-1 rounded bg-secondary/10 hover:bg-secondary/20 text-secondary text-[10px] font-bold uppercase tracking-wide transition-colors">
+             <button onclick="window.scanSubdomain('${s.domain || s.id || s.name}')" class="px-3 py-1 rounded bg-secondary/10 hover:bg-secondary/20 text-secondary text-[10px] font-bold uppercase tracking-wide transition-colors">
                ${isScanned ? 'View / Rescan' : 'Scan'}
              </button>
           </td>
@@ -818,20 +916,20 @@
       <h4 class="text-sm font-label uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
         <span class="material-symbols-outlined text-secondary">workspace_premium</span> Cryptographic Identity
       </h4>
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-4">
-        <div class="bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/10">
+      <div class="flex flex-nowrap overflow-x-auto gap-4 text-xs mb-4 pb-2 custom-scrollbar">
+        <div class="flex-1 min-w-max bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/10">
           <div class="text-[10px] font-label uppercase text-on-surface-variant/70 mb-1">Public Key</div>
           <div class="font-mono text-sm font-bold ${cert.quantumVulnerable ? 'text-[#F59E0B]' : 'text-[#10B981]'}">${cert.keyType} <span class="text-xs opacity-70">${cert.keySize ? cert.keySize + 'b' : ''}</span></div>
         </div>
-        <div class="bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/10">
+        <div class="flex-1 min-w-max bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/10">
           <div class="text-[10px] font-label uppercase text-on-surface-variant/70 mb-1">Signature Alg</div>
           <div class="font-mono text-sm font-bold text-on-surface">${cert.signatureAlgorithm || '—'}</div>
         </div>
-        <div class="bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/10">
+        <div class="flex-1 min-w-max bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/10">
           <div class="text-[10px] font-label uppercase text-on-surface-variant/70 mb-1">Issuer Authority</div>
-          <div class="font-mono text-sm font-bold text-on-surface truncate" title="${cert.issuer}">${cert.issuer || '—'}</div>
+          <div class="font-mono text-sm font-bold text-on-surface">${cert.issuer || '—'}</div>
         </div>
-        <div class="bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/10">
+        <div class="flex-1 min-w-max bg-surface-container-highest/50 p-4 rounded-xl border border-outline-variant/10">
           <div class="text-[10px] font-label uppercase text-on-surface-variant/70 mb-1">Expiration Phase</div>
           <div class="font-mono text-sm font-bold text-on-surface">${cert.notAfter ? new Date(cert.notAfter).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}</div>
         </div>
@@ -1104,13 +1202,30 @@
 
       // CBOM Table
       const sevColors = { critical: '#F43F5E', high: '#F59E0B', warning: '#FBBF24', info: '#859398', safe: '#10B981' };
-      document.getElementById('cbomTable').innerHTML = `<table class="w-full text-left"><thead class="sticky top-0 bg-surface-container-high/90"><tr>
-    <th class="px-3 py-2 text-[9px] font-label uppercase text-on-surface-variant">Type</th>
-    <th class="px-3 py-2 text-[9px] font-label uppercase text-on-surface-variant">Algorithm</th>
-    <th class="px-3 py-2 text-[9px] font-label uppercase text-on-surface-variant">Location</th>
-    <th class="px-3 py-2 text-[9px] font-label uppercase text-on-surface-variant">Status</th>
-  </tr></thead><tbody class="divide-y divide-outline-variant/10 text-xs">
-    ${cbom.assets.map(a => `<tr class="hover:bg-surface-container-high/20"><td class="px-3 py-2 font-mono text-on-surface-variant">${a.type}</td><td class="px-3 py-2 font-bold">${a.algorithm}</td><td class="px-3 py-2 font-mono text-on-surface-variant/70 truncate max-w-[200px]">${a.location}</td><td class="px-3 py-2"><span style="color:${a.quantumSafe ? '#10B981' : sevColors[a.severity]}">${a.quantumSafe ? '✅ Safe' : '❌ Vulnerable'}</span></td></tr>`).join('')}
+      document.getElementById('cbomTable').innerHTML = `<table class="w-full text-left border-collapse"><thead class="sticky top-0 bg-surface-container-highest/80 backdrop-blur-md shadow-sm z-10"><tr>
+    <th class="px-4 py-3 text-[10px] font-label uppercase tracking-widest text-on-surface-variant border-b border-outline-variant/20">Type / Location</th>
+    <th class="px-4 py-3 text-[10px] font-label uppercase tracking-widest text-on-surface-variant border-b border-outline-variant/20">Algorithm</th>
+    <th class="px-4 py-3 text-[10px] font-label uppercase tracking-widest text-on-surface-variant border-b border-outline-variant/20">Quantum Risk Context</th>
+    <th class="px-4 py-3 text-[10px] font-label uppercase tracking-widest text-on-surface-variant border-b border-outline-variant/20">Migration Path</th>
+    <th class="px-4 py-3 text-[10px] font-label uppercase tracking-widest text-on-surface-variant border-b border-outline-variant/20">Status</th>
+  </tr></thead><tbody class="divide-y divide-outline-variant/5 text-xs">
+    ${cbom.assets.map(a => `
+      <tr class="hover:bg-surface-container-high/30 transition-colors group">
+        <td class="px-4 py-3">
+          <div class="font-mono text-xs font-semibold" style="color:${a.quantumSafe ? '#10B981' : sevColors[a.severity]}">${a.type.toUpperCase()}</div>
+          <div class="font-mono text-[10px] text-on-surface-variant/60 mt-0.5 truncate max-w-[200px]" title="${a.location}">${a.location}</div>
+        </td>
+        <td class="px-4 py-3 font-bold font-mono text-[11px] text-on-surface">${a.algorithm}</td>
+        <td class="px-4 py-3 text-[11px] text-on-surface-variant/90 leading-tight max-w-[250px] whitespace-normal">${a.recommendation || (a.quantumSafe ? 'Secure' : 'Unknown Risk')}</td>
+        <td class="px-4 py-3 font-mono text-[10px] font-bold" style="color: #00DBE9;">${a.pqcAlternative || (a.quantumSafe ? 'N/A' : 'Pending Update')}</td>
+        <td class="px-4 py-3">
+          <span class="inline-flex items-center px-2 py-1 rounded text-[9px] font-bold uppercase tracking-wider shadow-sm transition-all group-hover:scale-105" 
+                style="background:${a.quantumSafe ? '#10B981' : sevColors[a.severity]}15; color:${a.quantumSafe ? '#10B981' : sevColors[a.severity]}; border: 1px solid ${a.quantumSafe ? '#10B981' : sevColors[a.severity]}30">
+            ${a.quantumSafe ? '✅ SAFE' : '⚠️ VULNERABLE'}
+          </span>
+        </td>
+      </tr>
+    `).join('')}
   </tbody></table>`;
 
       // Store for export
@@ -1143,12 +1258,20 @@
       `;
       document.body.appendChild(overlay);
 
+      const container = document.createElement('div');
+      container.style.position = 'absolute';
+      container.style.left = '-9999px';
+      container.style.top = '0';
+      container.innerHTML = html;
+      document.body.appendChild(container);
+
       try {
-        await html2pdf().set(opt).from(html).save();
+        await html2pdf().set(opt).from(container).save();
       } catch (err) {
         console.error('PDF Export Error:', err);
         alert('Export failed. Check console for details.');
       } finally {
+        if (container.parentNode) container.parentNode.removeChild(container);
         document.body.removeChild(overlay);
       }
     }
@@ -1378,19 +1501,24 @@
             <table style="width: 100%; border-collapse: collapse; font-size: 11px; text-align: left;">
               <thead>
                 <tr style="border-bottom: 1px solid #1C2A41;">
-                  <th style="padding: 18px 20px; color: #3C494E; font-weight: 800; letter-spacing: 1.5px;">TYPE</th>
-                  <th style="padding: 18px 20px; color: #3C494E; font-weight: 800; letter-spacing: 1.5px;">ALGORITHM</th>
-                  <th style="padding: 18px 20px; color: #3C494E; font-weight: 800; letter-spacing: 1.5px;">LOCATION</th>
-                  <th style="padding: 18px 20px; color: #3C494E; font-weight: 800; letter-spacing: 1.5px;">STATUS</th>
+                  <th style="padding: 18px 15px; color: #3C494E; font-weight: 800; letter-spacing: 1.5px;">ASSET</th>
+                  <th style="padding: 18px 15px; color: #3C494E; font-weight: 800; letter-spacing: 1.5px;">ALGORITHM</th>
+                  <th style="padding: 18px 15px; color: #3C494E; font-weight: 800; letter-spacing: 1.5px;">RISK_CONTEXT</th>
+                  <th style="padding: 18px 15px; color: #3C494E; font-weight: 800; letter-spacing: 1.5px;">MIGRATION_PATH</th>
+                  <th style="padding: 18px 15px; color: #3C494E; font-weight: 800; letter-spacing: 1.5px; text-align: right;">STATUS</th>
                 </tr>
               </thead>
               <tbody>
                 ${cbom.assets.map((a, i) => `
                   <tr style="background: ${i % 2 === 0 ? 'transparent' : 'rgba(13, 28, 50, 0.4)'}; border-bottom: 1px solid #1C2A41;">
-                    <td style="padding: 18px 20px; font-family: monospace; color: #A8B2C1;">${a.type}</td>
-                    <td style="padding: 18px 20px; font-weight: 900; color: #D6E3FF;">${a.algorithm}</td>
-                    <td style="padding: 18px 20px; font-family: monospace; color: #3C494E; font-size: 10px;">${a.location === 'Multiple files' ? 'PROJECT_SCOPE' : a.location.split('/').pop()}</td>
-                    <td style="padding: 18px 20px; color: ${a.quantumSafe ? '#00FFAD' : '#F43F5E'}; font-weight: 900; font-family: 'Space Grotesk', sans-serif;">
+                    <td style="padding: 15px; vertical-align: top;">
+                      <div style="font-family: monospace; font-weight: 900; color: ${a.quantumSafe ? '#00FFAD' : '#F43F5E'}; font-size: 10px; margin-bottom: 4px;">${a.type.toUpperCase()}</div>
+                      <div style="font-family: monospace; color: #3C494E; font-size: 9px; max-width: 150px; word-break: break-all;">${a.location === 'Multiple files' ? 'PROJECT_SCOPE' : a.location.split('/').pop()}</div>
+                    </td>
+                    <td style="padding: 15px; vertical-align: top; font-weight: 900; font-family: monospace; font-size: 10px; color: #D6E3FF; max-width: 160px; word-break: break-all;">${a.algorithm}</td>
+                    <td style="padding: 15px; vertical-align: top; color: #A8B2C1; font-size: 10px; line-height: 1.4; max-width: 180px;">${a.recommendation || (a.quantumSafe ? 'Secure' : 'Unknown Risk')}</td>
+                    <td style="padding: 15px; vertical-align: top; font-family: monospace; font-size: 10px; font-weight: 900; color: #00DBE9; max-width: 160px;">${a.pqcAlternative || (a.quantumSafe ? 'N/A' : 'Pending')}</td>
+                    <td style="padding: 15px; vertical-align: top; text-align: right; color: ${a.quantumSafe ? '#00FFAD' : '#F43F5E'}; font-weight: 900; font-family: 'Space Grotesk', sans-serif; font-size: 10px;">
                       ${a.quantumSafe ? '[ RE-SAFE ]' : '[ AT_RISK ]'}
                     </td>
                   </tr>
