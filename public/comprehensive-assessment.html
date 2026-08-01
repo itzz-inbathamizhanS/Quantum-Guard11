@@ -24,21 +24,52 @@
 </head>
 <body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-[#041329]/60 backdrop-blur-xl border-b border-[#3C494E]/15 shadow-[0_8px_32px_0_rgba(0,212,255,0.08)] flex justify-between items-center px-8 h-20 max-w-none">
-<a href="index.html" class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF] font-headline">QuantumGuard</a>
-<div class="hidden md:flex items-center space-x-8 font-headline tracking-tight text-[#D6E3FF]">
-<a class="text-[#00D4FF] border-b-2 border-[#00D4FF] pb-1 font-bold font-['Inter'] tracking-tight" href="quick-assessment.html">Assessment</a>
-<a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300 font-['Inter'] tracking-tight" href="results.html">Results</a>
-<a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300 font-['Inter'] tracking-tight" href="compliance.html">Compliance</a>
-<a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300 font-['Inter'] tracking-tight" href="tools.html">Tools</a>
-<a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300 font-['Inter'] tracking-tight" href="leaderboard.html">Leaderboard</a>
-<a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300 font-['Inter'] tracking-tight" href="docs.html">Docs</a>
-</div>
-<div class="flex items-center space-x-6">
-<button class="material-symbols-outlined text-[#D6E3FF]/70 hover:bg-[#27354C]/50 p-2 rounded-full transition-all">notifications</button>
-<button class="material-symbols-outlined text-[#D6E3FF]/70 hover:bg-[#27354C]/50 p-2 rounded-full transition-all">account_circle</button>
-</div>
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-[#041329]/90 backdrop-blur-xl border-b border-[#3C494E]/30 shadow-[0_8px_32px_0_rgba(0,212,255,0.08)]">
+  <div class="flex justify-between items-center w-full px-8 h-20 max-w-7xl mx-auto">
+    <a href="index.html" class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF] font-headline flex items-center gap-2">
+      <span class="material-symbols-outlined text-[#00D4FF]" style="font-variation-settings: 'FILL' 1;">security</span>
+      QuantumGuard
+    </a>
+    
+    <div class="hidden md:flex gap-8 font-['Inter'] tracking-normal font-medium text-[15px] items-center justify-center flex-1">
+      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="index.html" data-page="index.html">Home</a>
+      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="quick-assessment.html" data-page="quick-assessment.html">Assessment</a>
+      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="results.html" data-page="results.html">Results</a>
+      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="compliance.html" data-page="compliance.html">Compliance</a>
+      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="tools.html" data-page="tools.html">Tools</a>
+      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="leaderboard.html" data-page="leaderboard.html">Leaderboard</a>
+      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="docs.html" data-page="docs.html">Docs</a>
+    </div>
+    
+    <div class="flex items-center gap-4">
+      <button class="p-2 hover:bg-[#27354C]/50 transition-all duration-200 rounded-full hidden md:block">
+        <span class="material-symbols-outlined text-[#00D4FF]">notifications</span>
+      </button>
+      <button class="p-2 hover:bg-[#27354C]/50 transition-all duration-200 rounded-full hidden md:block">
+        <span class="material-symbols-outlined text-[#00D4FF]">account_circle</span>
+      </button>
+      <button id="mobileMenuBtn" class="md:hidden p-2 hover:bg-[#27354C]/50 rounded-lg transition-all" aria-label="Open menu">
+        <span class="material-symbols-outlined text-[#D6E3FF]">menu</span>
+      </button>
+    </div>
+  </div>
 </nav>
+
+<script>
+  // Highlight active link
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const links = document.querySelectorAll('.nav-link');
+    links.forEach(link => {
+      if (link.getAttribute('data-page') === currentPage) {
+        link.classList.remove('text-[#D6E3FF]/70');
+        link.classList.add('text-[#00D4FF]', 'border-b-2', 'border-[#00D4FF]', 'pb-1', 'font-bold');
+      }
+    });
+  });
+</script>
+
 <div class="flex h-screen pt-20 overflow-hidden">
 <!-- Sidebar -->
 <aside class="w-80 bg-surface-container-low border-r border-outline-variant/15 flex flex-col hidden lg:flex">
