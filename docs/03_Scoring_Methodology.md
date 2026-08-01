@@ -59,6 +59,19 @@ The scanner recognizes the following post-quantum algorithms:
 - **Hybrid groups** — X25519MLKEM768, X25519Kyber768, secp256r1MLKEM768
 - **Classic McEliece**
 
+### 3.2.5 Recent Implementation Notes
+
+**Before:** the system measured TLS quantum posture without an explicit per-category score breakdown in the UI, and the node-based TLS probe could mis-handle TLS version names when mapping to the runtime API.
+
+**After:** the backend now returns a structured `score_breakdown` object with category penalties, normalized formula, and human-readable reasoning. The frontend now renders a subdomain comparison panel that highlights the strongest and weakest scanned subdomains and explains the gap using the top penalty categories.
+
+**Why:** this improves transparency and makes it easier to answer questions like “why is this subdomain 40 while another is 60?” by exposing specific risk categories rather than only a single aggregate score.
+
+**What changed:**
+- Added structured score breakdowns for categories such as key exchange, signatures, protocol version, symmetric ciphers, certificate hygiene, and vulnerability posture.
+- Added subdomain comparison UI support to compare highest/lowest scanned subdomains and identify the categories driving the score gap.
+- Improved supported group inference and TLS probe version normalization in the scanner to prevent invalid runtime version names.
+
 ## 3.3 Maturity Assessment Scoring (Client-Side)
 
 ### 3.3.1 Evaluation Dimensions

@@ -65,31 +65,29 @@ function normalizeScore(score) {
 }
 
 function inferSupportedGroups(protocol_support, isPQC, bestCert) {
-  const groups = [];
-  const seen = new Set();
-  const add = (value) => {
-    if (value && !seen.has(value)) {
-      seen.add(value);
-      groups.push(value);
-    }
-  };
+  const groups = new Set();
 
-  if (protocol_support?.tls_1_3?.supported) {
-    add('X25519');
-    add('secp256r1');
-    if (isPQC) {
-      add('X25519MLKEM768');
-      add('ML-KEM-768');
-    }
-  }
+  (protocol_support?.tls_1_3?.cipher_suites || []).forEach(cs => {
+    if (cs.ephemeral_name) groups.add(cs.ephemeral_name);
+    if (cs.key_exchange) groups.add(cs.key_exchange);
+    if (cs.ephemeral_type) groups.add(cs.ephemeral_type);
+  });
 
   if (bestCert) {
     const sigAlg = (bestCert.sigalg || '').toLowerCase();
-    if (sigAlg.includes('ml-dsa') || sigAlg.includes('dilithium')) add('ML-DSA');
-    if (sigAlg.includes('slh-dsa') || sigAlg.includes('sphincs')) add('SLH-DSA');
+    if (sigAlg.includes('ml-dsa') || sigAlg.includes('dilithium')) groups.add('ML-DSA');
+    if (sigAlg.includes('slh-dsa') || sigAlg.includes('sphincs')) groups.add('SLH-DSA');
   }
 
-  return groups;
+  if (protocol_support?.tls_1_3?.supported && groups.size === 0) {
+    groups.add('TLS 1.3');
+  }
+
+  if (isPQC && !Array.from(groups).some(g => /ML[-_]?KEM|KYBER|FIPS[-_]?203/i.test(g))) {
+    groups.add('X25519MLKEM768');
+  }
+
+  return Array.from(groups).filter(Boolean);
 }
 
 function buildScoreBreakdown(scoring, protocol_support, bestCert, isPQC, pqcDetails, hasRC4, hasDES) {
@@ -442,23 +440,32 @@ function formatCertDN(dnObject) {
 
 const PROBE_TIMEOUT_MS = 5000;
 
+const TLS_VERSION_MAP = {
+  'TLSv1.3': 'TLSv1.3',
+  'TLSv1.2': 'TLSv1.2',
+  'TLSv1.1': 'TLSv1.1',
+  'TLSv1.0': 'TLSv1',
+};
+
 async function probeProtocol(hostname, port, version, cipher = null) {
   return new Promise((resolve) => {
     let resolved = false;
     function safeResolve(value) {
       if (!resolved) {
         resolved = true;
+        resolved = true;
         resolve(value);
       }
     }
 
     try {
+      const tlsVersion = TLS_VERSION_MAP[version] || version;
       const opts = {
         host: hostname,
         port: port,
         servername: hostname,
-        minVersion: version,
-        maxVersion: version,
+        minVersion: tlsVersion,
+        maxVersion: tlsVersion,
         rejectUnauthorized: false,
         timeout: PROBE_TIMEOUT_MS,
       };

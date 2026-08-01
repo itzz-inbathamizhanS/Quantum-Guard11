@@ -678,9 +678,93 @@
       runSSLyzeScan();
     };
 
+    function buildSubdomainComparison(subdomains) {
+      const scanned = subdomains.filter(s => s.report && Number.isFinite(s.score));
+      if (scanned.length < 2) return null;
+
+      const sorted = [...scanned].sort((a, b) => b.score - a.score);
+      const best = sorted[0];
+      const worst = sorted[sorted.length - 1];
+      if (!best.report?.score_breakdown || !worst.report?.score_breakdown) return null;
+
+      const bestCats = best.report.score_breakdown.categories || [];
+      const worstCats = worst.report.score_breakdown.categories || [];
+      const catMap = {};
+
+      bestCats.forEach(cat => {
+        if (!cat || !cat.id) return;
+        catMap[cat.id] = { id: cat.id, name: cat.name, best, bestPenalty: cat.penalty, bestReason: cat.reason, worstPenalty: 0, worstReason: '' };
+      });
+
+      worstCats.forEach(cat => {
+        if (!cat || !cat.id) return;
+        if (!catMap[cat.id]) {
+          catMap[cat.id] = { id: cat.id, name: cat.name, best, bestPenalty: 0, bestReason: '', worstPenalty: cat.penalty, worstReason: cat.reason };
+        } else {
+          catMap[cat.id].worstPenalty = cat.penalty;
+          catMap[cat.id].worstReason = cat.reason;
+        }
+      });
+
+      const diffs = Object.values(catMap)
+        .filter(diff => Number.isFinite(diff.bestPenalty) && Number.isFinite(diff.worstPenalty) && diff.worstPenalty > diff.bestPenalty)
+        .map(diff => ({
+          name: diff.name,
+          delta: diff.worstPenalty - diff.bestPenalty,
+          bestPenalty: diff.bestPenalty,
+          worstPenalty: diff.worstPenalty,
+          worstReason: diff.worstReason,
+        }))
+        .sort((a, b) => b.delta - a.delta)
+        .slice(0, 3);
+
+      const diffSummary = diffs.length > 0
+        ? diffs.map(diff => `+${diff.delta} in ${diff.name} (${diff.worstReason})`).join(' · ')
+        : 'The score gap is mostly driven by different overall risk posture rather than a single missing category.';
+
+      const categoryRows = diffs.length > 0 ? `
+        <div class="grid gap-3 md:grid-cols-3 mt-4">
+          ${diffs.map(diff => `
+            <div class="rounded-xl border border-outline-variant/10 bg-surface-container-high/30 p-3">
+              <div class="flex justify-between items-center mb-2">
+                <span class="font-semibold text-sm">${diff.name}</span>
+                <span class="font-mono text-xs text-primary">+${diff.delta}</span>
+              </div>
+              <div class="text-[11px] text-on-surface-variant">${diff.worstReason}</div>
+            </div>`).join('')}
+        </div>` : '';
+
+      return `
+        <div class="glass-card rounded-2xl p-6 mt-4 border border-primary/10 bg-surface-container-highest/30">
+          <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div class="text-sm font-semibold text-primary uppercase tracking-widest">Subdomain comparison</div>
+              <div class="mt-2 text-sm text-on-surface-variant">The strongest and weakest scanned subdomains are compared here to explain the score gap.</div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono text-on-surface-variant">
+              <div class="rounded-xl border border-outline-variant/10 bg-surface p-3">
+                <div class="font-semibold text-surface-900">Highest score</div>
+                <div class="mt-1 text-primary">${best.domain || best.id} — ${best.score}/100</div>
+              </div>
+              <div class="rounded-xl border border-outline-variant/10 bg-surface p-3">
+                <div class="font-semibold text-surface-900">Lowest score</div>
+                <div class="mt-1 text-warning">${worst.domain || worst.id} — ${worst.score}/100</div>
+              </div>
+              <div class="rounded-xl border border-outline-variant/10 bg-surface p-3">
+                <div class="font-semibold text-surface-900">Score gap</div>
+                <div class="mt-1 text-primary">${best.score - worst.score} points</div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 text-sm text-on-surface-variant">${diffSummary}</div>
+          ${categoryRows}
+        </div>`;
+    }
+
     function renderSubdomainPanel(container, parentDomain, subdomains) {
       const count = subdomains.length;
       const activeCount = subdomains.filter(s => s.score > 0).length;
+      const comparisonPanel = buildSubdomainComparison(subdomains);
       const rows = subdomains.map((s, idx) => {
         const score = s.score || 0;
         const isScanned = score > 0;
@@ -726,6 +810,7 @@
               ${count > 0 ? '<div class="w-2 h-2 rounded-full bg-secondary animate-pulse" title="Live updating from backend"></div>' : ''}
             </div>
           </div>
+          ${comparisonPanel || ''}
           ${count > 0 ? `
             <div class="max-h-[350px] overflow-y-auto">
               <table class="w-full text-left whitespace-nowrap">
