@@ -664,6 +664,10 @@ const Scanner = (function() {
       port: sslyzeData.port,
       timestamp: sslyzeData.timestamp,
       score: sslyzeData.quantum_score || 0,
+      scoreBreakdown: sslyzeData.score_breakdown || null,
+      vulnerabilityFindings: sslyzeData.vulnerability_findings || [],
+      subdomainVariance: sslyzeData.subdomain_variance || null,
+      supportedGroups: sslyzeData.supported_groups || [],
       status: sslyzeData.status,
       connectivity: sslyzeData.connectivity,
       ip_address: sslyzeData.ip_address,
@@ -746,15 +750,22 @@ const Scanner = (function() {
    */
   function _isCipherQuantumVulnerable(cs) {
     const name = (cs.name || '').toUpperCase();
+    const kex = cs.key_exchange || '';
+    const kexType = typeof kex === 'object' ? (kex.type || '') : String(kex);
+    const kexName = typeof kex === 'object' ? (kex.curve || '') : '';
+    const combined = `${name} ${kexType} ${kexName}`.toUpperCase();
+
+    // Check for PQC / hybrid key exchange indicators
+    const PQC_RE = /KYBER|ML[-_]?KEM|ML[-_]?DSA|SLH[-_]?DSA|SPHINCS|MCELIECE|X25519MLKEM|FIPS[-_]?20[345]/i;
+    if (PQC_RE.test(combined)) return false; // PQC detected → quantum-safe
+
     // TLS 1.3 ciphers don't embed key exchange — inherits from handshake
     if (name.startsWith('TLS_AES') || name.startsWith('TLS_CHACHA20')) {
       // TLS 1.3 — key exchange is separate, typically ECDHE (quantum-vulnerable)
-      return true; // conservative: assume ECDHE unless ML-KEM detected
+      return true; // conservative: assume ECDHE unless ML-KEM detected above
     }
     // Explicit quantum-vulnerable key exchange in cipher name
     if (/ECDHE|ECDH|RSA|DHE|DH/.test(name)) return true;
-    // PQC key exchange
-    if (/KYBER|ML.KEM/.test(name)) return false;
     return true; // default conservative
   }
 

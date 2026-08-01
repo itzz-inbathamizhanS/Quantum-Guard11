@@ -6,7 +6,54 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { saveResult, getLeaderboard } from './leaderboard.js';
 
+function buildSubdomainVariance(subdomains) {
+  const numericScores = subdomains
+    .map(item => Number(item?.score ?? item?.report?.quantum_score ?? 0))
+    .filter(value => Number.isFinite(value));
+
+  if (numericScores.length === 0) {
+    return {
+      domain_average: 0,
+      lowest_baseline: 0,
+      variance: 0,
+      warning: false,
+      explanation: 'No subdomain scores were available.'
+    };
+  }
+
+  const domainAverage = Math.round(numericScores.reduce((sum, value) => sum + value, 0) / numericScores.length);
+  const lowestBaseline = Math.min(...numericScores);
+  const variance = Math.max(...numericScores) - lowestBaseline;
+  const warning = variance >= 20;
+
+  return {
+    domain_average: domainAverage,
+    lowest_baseline: lowestBaseline,
+    variance,
+    warning,
+    explanation: warning
+      ? 'Variance is high across subdomains; the weakest link should be treated as the organization baseline.'
+      : 'Subdomain scores are consistent, so the organization posture is relatively uniform.'
+  };
+}
+
 dotenv.config();
+
+// Hostname validation — prevents injection & abuse
+const HOSTNAME_RE = /^(?!-)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,}$/;
+function isValidHostname(h) {
+  if (!h || typeof h !== 'string') return false;
+  const clean = h.trim().toLowerCase();
+  return HOSTNAME_RE.test(clean) && clean.length <= 253;
+}
+function sanitizeHostname(h) {
+  let clean = (h || '').trim().toLowerCase();
+  // Strip protocol prefixes
+  ['https://', 'http://'].forEach(p => { if (clean.startsWith(p)) clean = clean.slice(p.length); });
+  // Strip trailing path/slash
+  clean = clean.split('/')[0];
+  return clean;
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,10 +82,15 @@ app.get('/api/health', (req, res) => {
 
 app.post('/api/subdomains', async (req, res) => {
   try {
-    const { hostname } = req.body;
-    if (!hostname) return res.status(400).json({ error: 'hostname required' });
+    const rawHostname = req.body.hostname;
+    if (!rawHostname) return res.status(400).json({ error: 'hostname required' });
 
-    const { findSubdomains } = await import('./subdomains.js');
+    const hostname = sanitizeHostname(rawHostname);
+    if (!isValidHostname(hostname)) {
+      return res.status(400).json({ error: 'Invalid hostname format' });
+    }
+
+    const { findSubdomains, batchAsync } = await import('./subdomains.js');
     let subdomainsList = await findSubdomains(hostname);
     
     if (subdomainsList.length === 0) {
@@ -50,8 +102,10 @@ app.post('/api/subdomains', async (req, res) => {
     const leaderData = getLeaderboard();
     const { runDetailedTLSScan } = await import('./scanner.js');
 
-    await Promise.all(subdomainsList.map(async (sub) => {
-      if (!leaderData.find(d => d.domain === sub)) {
+    // Use batched scanning to limit concurrency (max 5 simultaneous)
+    const scanTasks = subdomainsList
+      .filter(sub => !leaderData.find(d => d.domain === sub))
+      .map(sub => async () => {
         try {
           const result = await runDetailedTLSScan(sub, 443, false);
           const score = result.quantum_score || 0;
@@ -63,9 +117,13 @@ app.post('/api/subdomains', async (req, res) => {
             timestamp: result.timestamp,
             report: result
           });
-        } catch(e) {}
-      }
-    }));
+        } catch(e) {
+          // Individual subdomain scan failure is non-fatal
+          console.warn(`[SubdomainScan] Failed for ${sub}: ${e.message}`);
+        }
+      });
+
+    await batchAsync(scanTasks, 5);
 
     const updatedLeaderData = getLeaderboard();
     
@@ -81,9 +139,12 @@ app.post('/api/subdomains', async (req, res) => {
       };
     });
 
+    const variance = buildSubdomainVariance(formattedSubdomains);
+
     res.json({
       domain: hostname,
-      subdomains: formattedSubdomains
+      subdomains: formattedSubdomains,
+      subdomain_variance: variance
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -92,8 +153,14 @@ app.post('/api/subdomains', async (req, res) => {
 
 app.post('/api/scan', async (req, res) => {
   try {
-    const { hostname, port = 443, deep = false } = req.body;
-    if (!hostname) return res.status(400).json({ error: 'hostname required' });
+    const { port = 443, deep = false } = req.body;
+    const rawHostname = req.body.hostname;
+    if (!rawHostname) return res.status(400).json({ error: 'hostname required' });
+
+    const hostname = sanitizeHostname(rawHostname);
+    if (!isValidHostname(hostname)) {
+      return res.status(400).json({ error: 'Invalid hostname format' });
+    }
     
     // Import dynamically so it works if file was just created
     const { runDetailedTLSScan } = await import('./scanner.js');
@@ -110,7 +177,14 @@ app.post('/api/scan', async (req, res) => {
       report: result
     });
     
-    res.json(result);
+    const overview = {
+      score_breakdown: result.score_breakdown,
+      vulnerability_findings: result.vulnerability_findings || [],
+      supported_groups: result.supported_groups || [],
+      subdomain_variance: result.subdomain_variance || null
+    };
+
+    res.json({ ...result, ...overview });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

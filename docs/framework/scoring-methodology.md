@@ -1,4 +1,4 @@
-﻿# QuantumGuard Scoring Methodology
+# QuantumGuard Scoring Methodology
 **Comprehensive Evaluation and Interpretation Framework**
 
 ## Overview
@@ -66,6 +66,27 @@ Overall Score = (Dimension 1 + Dimension 2 + Dimension 3 + Dimension 4) ÷ 4
 - Dimension 3 (DPE): 2.5
 - Dimension 4 (ITR): 2.9
 - Overall QuantumGuard Score = (2.8 + 3.1 + 2.5 + 2.9) ÷ 4 = 2.8
+
+## TLS Quantum Scoring (Server-Side)
+
+In addition to the organizational maturity assessment, QuantumGuard performs an active TLS scan of target endpoints. This scoring uses a bounded, normalized weighted risk model:
+
+```
+Score = max(0, min(100, round(100 × (1 - TotalWeightedRisk / MaxTheoreticalRisk))))
+```
+
+### Risk Category Weights
+- **Key Exchange (KEM) (Max Penalty: 30)**: Prioritizes Shor's algorithm threat and rewards hybrid PQC key exchanges such as X25519MLKEM768.
+- **Signatures (Max Penalty: 20)**: Prioritizes Shor's algorithm threat and rewards PQC-capable signatures such as ML-DSA and SLH-DSA.
+- **Protocol Version (Max Penalty: 20)**: Penalizes legacy TLS (downgrade risks) and rewards TLS 1.3 support.
+- **Symmetric Ciphers (Max Penalty: 15)**: Penalizes weak symmetric ciphers (Grover's algorithm quadratic threat) and rewards AEAD suites.
+- **Certificate Hygiene (Max Penalty: 10)**: Classical operational risk, key size, and certificate algorithm posture.
+- **Vulnerability Posture (Max Penalty: 5)**: Binary checks for known TLS vulnerabilities and weak suite negotiation.
+
+*(Max Theoretical Risk = 100)*
+
+The scan payload now includes a score breakdown object with the starting score, category penalties, and the normalized formula so the frontend can render a plain-language explanation for the end user.
+
 
 ## Maturity Level Interpretation
 

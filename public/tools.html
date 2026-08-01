@@ -896,6 +896,68 @@
       <div class="flex flex-wrap gap-1.5">${curves.supported.map(c => `<span class="inline-flex items-center px-2 py-1 rounded-md bg-secondary/10 border border-secondary/20 text-secondary text-[10px] font-mono shadow-sm hover:bg-secondary/20 transition-colors">${c}</span>`).join('')}</div>
     </div>` : '';
 
+      const explanationHtml = raw.score_breakdown ? `
+      <div class="glass-card rounded-2xl p-6 mt-4 border border-primary/20">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h4 class="text-lg font-bold font-headline">Score Breakdown</h4>
+            <p class="text-sm text-on-surface-variant">${raw.score_breakdown.explanation}</p>
+          </div>
+          <span class="text-xs uppercase tracking-[0.25em] text-primary">${raw.score_breakdown.normalized_formula}</span>
+        </div>
+        <div class="grid gap-3 md:grid-cols-2">
+          ${(raw.score_breakdown.categories || []).map(cat => `
+            <div class="rounded-xl border border-outline-variant/10 bg-surface-container-high/30 p-3">
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-semibold text-sm">${cat.name}</span>
+                <span class="font-mono text-xs text-primary">-${cat.penalty}/${cat.cap}</span>
+              </div>
+              <p class="text-[12px] text-on-surface-variant">${cat.reason}</p>
+            </div>`).join('')}
+        </div>
+      </div>` : '';
+
+      const findingHtml = (raw.vulnerability_findings || []).length > 0 ? `
+      <div class="glass-card rounded-2xl p-6 mt-4">
+        <h4 class="text-lg font-bold font-headline mb-4">Vulnerability Details</h4>
+        <div class="space-y-3">
+          ${(raw.vulnerability_findings || []).map(item => `
+            <div class="rounded-xl border border-outline-variant/10 bg-surface-container-high/30 p-4">
+              <div class="flex justify-between items-start gap-3 mb-2">
+                <div class="font-semibold">${item.title}</div>
+                <span class="px-2 py-1 rounded-full text-[10px] uppercase tracking-wide bg-warning/10 text-warning">${item.severity}</span>
+              </div>
+              <p class="text-sm text-on-surface-variant mb-2">${item.description}</p>
+              <div class="text-[11px] text-on-surface-variant/80 space-y-1">
+                <div><span class="font-semibold text-primary">Origin:</span> ${item.origin?.target || 'unknown'}</div>
+                <div><span class="font-semibold text-primary">Misconfiguration:</span> ${item.origin?.misconfiguration || 'No detail captured'}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>` : '';
+
+      const remediationHtml = (raw.vulnerability_findings || []).length > 0 ? `
+      <div class="glass-card rounded-2xl p-6 mt-4">
+        <h4 class="text-lg font-bold font-headline mb-4">Remediation Snippets</h4>
+        <div class="space-y-3">
+          ${(raw.vulnerability_findings || []).map(item => `
+            <div class="rounded-xl border border-secondary/20 bg-secondary/10 p-4">
+              <div class="font-semibold mb-2">${item.title}</div>
+              <p class="text-sm text-on-surface-variant mb-2">${item.remediation?.summary || 'Follow the configuration guidance below.'}</p>
+              <div class="space-y-2 text-sm">
+                ${(item.remediation?.config_snippets || []).map(snippet => `<pre class="whitespace-pre-wrap rounded-lg bg-[#041329] p-3 text-[11px] text-[#A8E8FF]">${snippet}</pre>`).join('')}
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>` : '';
+
+      const varianceHtml = raw.subdomain_variance ? `
+      <div class="glass-card rounded-2xl p-6 mt-4 ${raw.subdomain_variance.warning ? 'border-warning/20' : 'border-primary/20'}">
+        <h4 class="text-lg font-bold font-headline mb-2">Subdomain Variance</h4>
+        <p class="text-sm text-on-surface-variant">${raw.subdomain_variance.explanation}</p>
+        <div class="mt-3 font-mono text-xs text-primary">Avg ${raw.subdomain_variance.domain_average}/100 • Lowest ${raw.subdomain_variance.lowest_baseline}/100</div>
+      </div>` : '';
+
       // Final render
       el.innerHTML = `
     <!-- Top Dashboard Header with SVG Circular Gauge -->
@@ -938,6 +1000,10 @@
         ${qaCards}
       </div>
     </div>
+    ${explanationHtml}
+    ${findingHtml}
+    ${remediationHtml}
+    ${varianceHtml}
 
     <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
