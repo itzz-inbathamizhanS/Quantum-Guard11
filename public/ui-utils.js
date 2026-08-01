@@ -386,6 +386,51 @@ QGUtils.radarChart = (function() {
 
 
 // ═══════════════════════════════════════════════════
+// SCORE UTILITIES — Boundary enforcement
+// ═══════════════════════════════════════════════════
+
+/**
+ * Clamp a score to [0, 100] range. Handles NaN, undefined, negative values.
+ * @param {number} score — raw score value
+ * @returns {number} score clamped to [0, 100]
+ */
+QGUtils.clampScore = function(score) {
+  if (score == null || isNaN(score)) return 0;
+  return Math.max(0, Math.min(100, Math.round(Number(score))));
+};
+
+/**
+ * Format a score for display. Handles decimals, ensures [0, 100] bounds.
+ * @param {number} score — raw score value
+ * @param {number} decimals — decimal places (default: 0)
+ * @returns {string} formatted score string
+ */
+QGUtils.formatScore = function(score, decimals) {
+  decimals = decimals || 0;
+  const clamped = QGUtils.clampScore(score);
+  return clamped.toFixed(decimals);
+};
+
+/**
+ * Explanatory text constants for UI tooltips and descriptions.
+ */
+QGUtils.EXPLANATIONS = {
+  assetCriticalityMultiplier:
+    'The Asset Criticality Multiplier adjusts vulnerability scores based on the strategic importance of the scanned asset. ' +
+    'Higher-criticality assets (e.g., payment systems, authentication infrastructure) receive amplified risk scores ' +
+    'to reflect greater potential business impact of quantum-vulnerable cryptography.',
+  pqcVulnerabilityTypes: {
+    shor: "Shor's Algorithm Threat: Provides exponential speedup for breaking RSA, ECDSA, ECDH, and DH. " +
+          'These algorithms will be completely broken by a sufficiently large quantum computer.',
+    grover: "Grover's Algorithm Threat: Provides quadratic speedup against symmetric ciphers. " +
+            'AES-128 effective security drops to 64 bits; AES-256 drops to 128 bits (still safe).',
+    harvest: 'Harvest Now, Decrypt Later (HNDL): Adversaries record encrypted traffic today, ' +
+             'planning to decrypt it once quantum computers become available.'
+  }
+};
+
+
+// ═══════════════════════════════════════════════════
 // BOOTSTRAP — Auto-initialize on DOM ready
 // ═══════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function() {
@@ -397,3 +442,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Make globally available
 if (typeof window !== 'undefined') window.QGUtils = QGUtils;
+
