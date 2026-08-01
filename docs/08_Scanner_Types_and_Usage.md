@@ -1,19 +1,28 @@
-# 8. Scanner Types & Usage
+# 8. Scanner Types and Usage
 
-QuantumGuard features multiple distinct cryptographic scanners to provide a holistic view of your organization's post-quantum readiness.
+## 8.1 Overview
+QuantumGuard provides a suite of scanners to comprehensively assess your organization's post-quantum cryptography (PQC) readiness. These tools can be accessed through the **Tools** portal.
 
-## 8.1 TLS Post-Quantum Scanner
-The core offering of QuantumGuard is the live TLS Scanner.
-*   **What it does:** It actively connects to internet-facing web servers and performs cryptographic handshakes to determine protocol support, cipher suite preferences, and certificate algorithms.
-*   **How it works:** It uses custom socket connections (bypassing native OS restrictions) to probe for specific protocols like TLS 1.0, 1.1, 1.2, and 1.3. It actively identifies if Post-Quantum Cryptography (PQC) key exchanges like **ML-KEM (Kyber)** are supported.
-*   **Usage:** Enter any domain (e.g., `example.com`) in the Assessment or Tools panel and click "Scan".
+## 8.2 Available Scanners
 
-## 8.2 Dependency Scanner (Coming Soon)
-A planned feature to integrate directly into your CI/CD pipelines.
-*   **What it does:** It analyzes your `package.json`, `requirements.txt`, or `go.mod` files to identify legacy cryptographic libraries (like old versions of OpenSSL or BouncyCastle).
-*   **Usage:** Will be available as a CLI tool or GitHub Action.
+### 8.2.1 Real-Time TLS/SSL Scanner
+*   **What it uses**: Node.js built-in `tls` module.
+*   **How it works**: Connects directly to the target domain over port 443 to perform deep protocol probing. It systematically attempts connections using TLS 1.0, 1.1, 1.2, and 1.3, capturing the precise cipher suites and certificates negotiated.
+*   **Primary Use Case**: Checking external-facing web servers for legacy vulnerabilities and verifying if modern Post-Quantum Cryptography (PQC) key exchanges like ML-KEM/Kyber are enabled.
 
-## 8.3 Code / AST Scanner (Coming Soon)
-A planned static analysis tool for codebases.
-*   **What it does:** It parses the Abstract Syntax Tree (AST) of your source code to detect hardcoded keys, weak random number generators, or direct invocations of legacy algorithms like `MD5` or `SHA-1`.
-*   **Usage:** Will be integrated into IDEs (VS Code) and pre-commit hooks.
+### 8.2.2 Dependency Scanner (Coming Soon)
+*   **What it uses**: Static code analysis.
+*   **How it works**: Parses `package.json`, `pom.xml`, and `requirements.txt` to cross-reference dependencies against known vulnerable or non-quantum-safe cryptographic libraries.
+*   **Primary Use Case**: Identifying outdated cryptographic libraries deep within application codebases.
+
+### 8.2.3 Source Code Analysis (Coming Soon)
+*   **What it uses**: Pattern matching and AST parsing.
+*   **How it works**: Scans source code for hardcoded encryption keys, explicit usage of deprecated algorithms (like MD5, SHA-1, RSA-1024), and poor entropy generation.
+*   **Primary Use Case**: Securing the software supply chain and ensuring developers are using modern cryptographic APIs.
+
+## 8.3 Running a Scan
+To initiate a scan:
+1. Navigate to the **Tools** page.
+2. Enter the target hostname (e.g., `api.example.com`).
+3. Select "Deep Scan" to probe individual legacy ciphers.
+4. Click **Run Scan**. The results will populate the AI Chat Advisor context and generate a downloadable PDF report.

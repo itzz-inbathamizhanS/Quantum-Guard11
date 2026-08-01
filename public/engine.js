@@ -335,7 +335,7 @@ Engine.fromScore100 = function(score100) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 Engine.calculateRiskMultiplier = function(profile) {
-  if (!profile || !QG.RISK_MULTIPLIERS) return 1.0;
+  if (!profile || typeof QG === 'undefined' || !QG.RISK_MULTIPLIERS) return 1.0;
 
   const rm = QG.RISK_MULTIPLIERS;
   let multiplier = 0;

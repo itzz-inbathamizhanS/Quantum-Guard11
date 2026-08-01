@@ -89,15 +89,14 @@
   <!-- TopNavBar -->
   <!-- TopNavBar Standardized -->
 <!-- TopNavBar Standardized -->
+<!-- TopNavBar Standardized -->
 <nav class="fixed top-0 w-full z-50 bg-[#041329]/80 backdrop-blur-xl border-b border-[#3C494E]/15 shadow-[0_8px_32px_0_rgba(0,212,255,0.08)] flex justify-between items-center px-4 md:px-8 h-20">
-    <div class="flex-shrink-0 z-10 w-48">
+    <div class="flex items-center gap-8">
         <a href="index.html" class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF] font-headline flex items-center gap-2">
             <span class="material-symbols-outlined text-[#00D4FF] hidden sm:block" style="font-variation-settings: 'FILL' 1;">security</span>
             QuantumGuard
         </a>
-    </div>
-    <div class="hidden lg:flex absolute inset-0 justify-center items-center pointer-events-none">
-        <div class="flex gap-6 items-center font-['Inter'] tracking-tight font-medium text-sm pointer-events-auto">
+        <div class="hidden lg:flex gap-6 items-center font-['Inter'] tracking-tight font-medium text-sm">
             <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="index.html">Home</a>
             <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="quick-assessment.html">Assessment</a>
             <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="results.html">Results</a>
@@ -108,7 +107,7 @@
             <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="about.html">About</a>
         </div>
     </div>
-    <div class="flex items-center gap-4 z-10">
+    <div class="flex items-center gap-4">
         <button class="hidden sm:block p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span class="material-symbols-outlined text-[#00D4FF]">notifications</span></button>
         <button class="hidden sm:block p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span class="material-symbols-outlined text-[#00D4FF]">account_circle</span></button>
         <button id="mobileMenuBtn" class="lg:hidden p-2 hover:bg-[#27354C]/50 rounded-lg transition-all" aria-label="Open menu">
@@ -133,25 +132,6 @@
     <a href="about.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">info</span> About</a>
 </div>
 
-      <button onclick="toggleChatAdvisor()" class="p-2 hover:bg-surface-container-highest rounded-full transition-all">
-        <span class="material-symbols-outlined text-on-surface-variant">close</span>
-      </button>
-    </div>
-
-    <!-- Chat Messages Container -->
-    <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin scrollbar-thumb-outline-variant">
-      <!-- Welcome Message -->
-      <div class="flex gap-4">
-        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-on-primary text-sm">robot_2</span>
-        </div>
-        <div class="space-y-2 max-w-[85%]">
-          <div class="p-4 bg-surface-container-highest rounded-2xl rounded-tl-none text-sm leading-relaxed border border-outline-variant/20 shadow-sm">
-            Hello! I'm your **QuantumGuard Security Advisor**. Run a TLS scan or upload code, and I can provide specific remediation advice based on your results. How can I help you secure your infrastructure today?
-          </div>
-          <p class="text-[10px] text-on-surface-variant/60 font-medium px-1 uppercase tracking-widest">Just now</p>
-        </div>
-      </div>
     </div>
 
     <!-- Chat Input Area -->

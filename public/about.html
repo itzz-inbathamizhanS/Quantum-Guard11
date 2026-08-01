@@ -1,316 +1,76 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>About QuantumGuard | Kinetic Shield Security</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="tailwind-config.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="shared.css" rel="stylesheet"/>
-<!-- Tailwind config loaded from shared tailwind-config.js -->
-<style>
-        .glass-card {
-            background: rgba(39, 53, 76, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-        .light-pipe {
-            background: linear-gradient(to bottom, #a8e8ff, transparent);
-        }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-    </style>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>About | QuantumGuard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="tailwind-config.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="shared.css" rel="stylesheet"/>
 </head>
-<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
-<!-- TopNavBar -->
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary">
+
 <!-- Top Navigation -->
-<nav class="fixed top-0 w-full z-50 bg-[#041329]/90 backdrop-blur-xl border-b border-[#3C494E]/30 shadow-[0_8px_32px_0_rgba(0,212,255,0.08)]">
-  <div class="flex justify-between items-center w-full px-8 h-20 max-w-7xl mx-auto">
-    <a href="index.html" class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF] font-headline flex items-center gap-2">
-      <span class="material-symbols-outlined text-[#00D4FF]" style="font-variation-settings: 'FILL' 1;">security</span>
-      QuantumGuard
-    </a>
-    
-    <div class="hidden md:flex gap-8 font-['Inter'] tracking-normal font-medium text-[15px] items-center justify-center flex-1">
-      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="index.html" data-page="index.html">Home</a>
-      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="quick-assessment.html" data-page="quick-assessment.html">Assessment</a>
-      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="results.html" data-page="results.html">Results</a>
-      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="compliance.html" data-page="compliance.html">Compliance</a>
-      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="tools.html" data-page="tools.html">Tools</a>
-      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="leaderboard.html" data-page="leaderboard.html">Leaderboard</a>
-      <a class="nav-link text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="docs.html" data-page="docs.html">Docs</a>
+<!-- TopNavBar Standardized -->
+<nav class="fixed top-0 w-full z-50 bg-[#041329]/80 backdrop-blur-xl border-b border-[#3C494E]/15 shadow-[0_8px_32px_0_rgba(0,212,255,0.08)] flex justify-between items-center px-4 md:px-8 h-20">
+    <div class="flex items-center gap-8">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF] font-headline flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#00D4FF] hidden sm:block" style="font-variation-settings: 'FILL' 1;">security</span>
+            QuantumGuard
+        </a>
+        <div class="hidden lg:flex gap-6 items-center font-['Inter'] tracking-tight font-medium text-sm">
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="index.html">Home</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="quick-assessment.html">Assessment</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="results.html">Results</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="compliance.html">Compliance</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="tools.html">Tools</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="leaderboard.html">Leaderboard</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="docs.html">Docs</a>
+            <a class="text-[#00D4FF] border-b-2 border-[#00D4FF] pb-1 font-bold transition-colors duration-300" href="about.html">About</a>
+        </div>
     </div>
-    
     <div class="flex items-center gap-4">
-      <button class="p-2 hover:bg-[#27354C]/50 transition-all duration-200 rounded-full hidden md:block">
-        <span class="material-symbols-outlined text-[#00D4FF]">notifications</span>
-      </button>
-      <button class="p-2 hover:bg-[#27354C]/50 transition-all duration-200 rounded-full hidden md:block">
-        <span class="material-symbols-outlined text-[#00D4FF]">account_circle</span>
-      </button>
-      <button id="mobileMenuBtn" class="md:hidden p-2 hover:bg-[#27354C]/50 rounded-lg transition-all" aria-label="Open menu">
-        <span class="material-symbols-outlined text-[#D6E3FF]">menu</span>
-      </button>
+        <button class="hidden sm:block p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span class="material-symbols-outlined text-[#00D4FF]">notifications</span></button>
+        <button class="hidden sm:block p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span class="material-symbols-outlined text-[#00D4FF]">account_circle</span></button>
+        <button id="mobileMenuBtn" class="lg:hidden p-2 hover:bg-[#27354C]/50 rounded-lg transition-all" aria-label="Open menu">
+            <span class="material-symbols-outlined text-[#D6E3FF]">menu</span>
+        </button>
     </div>
-  </div>
 </nav>
+<!-- Mobile Menu Overlay -->
+<div id="mobileOverlay" class="mobile-menu-overlay hidden fixed inset-0 bg-[#041329]/80 backdrop-blur-sm z-[51]"></div>
+<div id="mobileDrawer" class="mobile-menu-drawer fixed top-0 right-0 h-full w-64 bg-surface-container shadow-2xl z-[52] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-4">
+    <div class="flex justify-between items-center mb-4">
+        <span class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF]">Menu</span>
+        <button id="mobileCloseBtn" class="p-2 hover:bg-[#27354C]/50 rounded-lg"><span class="material-symbols-outlined text-[#D6E3FF]">close</span></button>
+    </div>
+    <a href="index.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">home</span> Home</a>
+    <a href="quick-assessment.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">quiz</span> Assessment</a>
+    <a href="results.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">assessment</span> Results</a>
+    <a href="compliance.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">verified</span> Compliance</a>
+    <a href="tools.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">build</span> Tools</a>
+    <a href="leaderboard.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">leaderboard</span> Leaderboard</a>
+    <a href="docs.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">description</span> Docs</a>
+    <a href="about.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">info</span> About</a>
+</div>
 
-<script>
-  // Highlight active link
-  document.addEventListener('DOMContentLoaded', () => {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const links = document.querySelectorAll('.nav-link');
-    links.forEach(link => {
-      if (link.getAttribute('data-page') === currentPage) {
-        link.classList.remove('text-[#D6E3FF]/70');
-        link.classList.add('text-[#00D4FF]', 'border-b-2', 'border-[#00D4FF]', 'pb-1', 'font-bold');
-      }
-    });
-  });
-</script>
-
-<main class="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
-<!-- Hero Section / Mission Statement -->
-<section class="mb-32 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-<div class="lg:col-span-7">
-<span class="font-label text-primary-fixed-dim tracking-[0.3em] uppercase mb-4 block">Our North Star</span>
-<h1 class="text-5xl md:text-7xl font-black font-headline tracking-tighter text-on-surface mb-8 leading-tight">
-                    Securing the <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container">Quantum Frontier</span>
-</h1>
-<p class="text-xl text-on-surface-variant leading-relaxed max-w-2xl">
-                    QuantumGuard was born from the realization that classical encryption is a ticking clock. Our mission is to provide an immutable kinetic shield for digital assets, leveraging NIST-standardized Post-Quantum Cryptography to ensure that today's data remains safe against tomorrow's compute.
-                </p>
-</div>
-<div class="lg:col-span-5 relative">
-<div class="aspect-square glass-card rounded-full flex items-center justify-center p-8 overflow-hidden shadow-[0_0_80px_rgba(0,212,255,0.15)]">
-<img class="w-full h-full object-cover rounded-full opacity-80 mix-blend-screen" data-alt="Abstract visualization of quantum entanglement and digital security nodes with vibrant cyan neon glowing lines on a deep black background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTIN4xv7rQP8mFTCK0HEL2tWf6x83iCSakq5hMUJiLB7nCfYHF6Occ8vRrYrTKjYEkpoZGLlTyYrZJPPX9zBqkkvKWZgLOpe4qb6XwPngwO2rx65TdBnlEEH9qlQ2v7WhHlbkAGLJMUKec8-RlCjah4Mhe9L8vwSFSUj6jyvB6pIyk9NYht_LRySYPGUBeUdmXhc5flfMKEHKbcs1AWhPaSK6tDyqgpgSS4VNyIU0Vcolvshw_bL8Q0vZIJYYXHtygmG8H-sBWVQxa"/>
-<div class="absolute inset-0 bg-gradient-to-tr from-surface to-transparent pointer-events-none"></div>
-</div>
-</div>
-</section>
-<!-- Quantum Threat Timeline -->
-<section class="mb-32">
-<div class="text-center mb-16">
-<h2 class="text-4xl font-black font-headline tracking-tight text-on-surface mb-4">The Threat Horizon</h2>
-<p class="font-label text-on-surface-variant tracking-widest uppercase">Evolving Towards Y2Q</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-10 relative">
-<!-- Timeline Connectors -->
-<div class="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-outline-variant/20 -translate-y-1/2 z-0"></div>
-<!-- Card 1 -->
-<div class="surface-container-high p-8 rounded-xl relative z-10 border border-outline-variant/15 hover:border-primary/30 transition-all group">
-<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center mb-6 group-hover:bg-primary-container/20 transition-colors">
-<span class="material-symbols-outlined text-primary">history</span>
-</div>
-<h3 class="font-headline font-bold text-xl text-primary-fixed-dim mb-2">Phase 1: Harvest Now</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed">Adversaries are currently capturing encrypted data to decrypt it later when quantum computers achieve sufficient power.</p>
-</div>
-<!-- Card 2 -->
-<div class="surface-container-high p-8 rounded-xl relative z-10 border border-outline-variant/15 shadow-[0_0_40px_rgba(124,58,237,0.1)]">
-<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-secondary">bolt</span>
-</div>
-<h3 class="font-headline font-bold text-xl text-secondary-fixed-dim mb-2">Phase 2: Quantum Supremacy</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed">The point where quantum processors outperform classical supercomputers in Shor’s and Grover’s algorithms.</p>
-</div>
-<!-- Card 3 -->
-<div class="surface-container-high p-8 rounded-xl relative z-10 border border-outline-variant/15 hover:border-primary/30 transition-all group">
-<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center mb-6 group-hover:bg-primary-container/20 transition-colors">
-<span class="material-symbols-outlined text-primary">security</span>
-</div>
-<h3 class="font-headline font-bold text-xl text-primary-fixed-dim mb-2">Phase 3: Resilience</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed">Full integration of lattice-based cryptography and hybrid security models as the global standard.</p>
-</div>
-</div>
-</section>
-<!-- NIST Standards & Bento Section -->
-<section class="mb-32">
-<div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-auto md:h-[600px]">
-<div class="md:col-span-2 md:row-span-2 glass-card rounded-xl p-10 flex flex-col justify-end border border-outline-variant/15 relative overflow-hidden group">
-<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent z-10"></div>
-<img class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-700" data-alt="Massive server data center with cool blue and violet lighting highlighting futuristic technology infrastructure" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxClMtaF4e8dIJtZK6BHBInedvmx8AAx4CkgRwiEtjYhW_sR4DGGWbJ2pAXzX-ZgwXWaY92XwBYlA9AamxkFugco3SGcdWygbnfj0pJ1bAK8CXmfAVE9WGDbi7yERsftlkzjtZT-KpnfQTpgTnVXaRrr4axkzxkkrWzgh8CmdDD57cfAD38VdeM_elanusA0h0CBuSejS5aB5vL3DkBnocIZAg_wnqFNUeozodx0xKUSyVmOmKGyzGWXpXL7cL6FA9Batr2nRpaNHe"/>
-<div class="relative z-20">
-<h3 class="text-3xl font-black font-headline mb-4">NIST PQC Standards</h3>
-<p class="text-on-surface-variant mb-6 leading-relaxed">We implement the first four algorithms selected by NIST's Post-Quantum Cryptography Standardization project, including CRYSTALS-Kyber and CRYSTALS-Dilithium.</p>
-<div class="flex flex-wrap gap-2">
-<span class="px-3 py-1 bg-primary/10 text-primary-fixed-dim text-xs font-label rounded-full border border-primary/20">FIPS 203</span>
-<span class="px-3 py-1 bg-primary/10 text-primary-fixed-dim text-xs font-label rounded-full border border-primary/20">FIPS 204</span>
-<span class="px-3 py-1 bg-primary/10 text-primary-fixed-dim text-xs font-label rounded-full border border-primary/20">FIPS 205</span>
-</div>
-</div>
-</div>
-<div class="md:col-span-2 bg-surface-container-high rounded-xl p-8 border border-outline-variant/15 flex items-center space-x-6">
-<div class="text-6xl font-black font-['JetBrains_Mono'] text-primary-container/30">99.9%</div>
-<div>
-<h4 class="font-headline font-bold text-on-surface">Data Integrity</h4>
-<p class="text-sm text-on-surface-variant">Our kinetic shielding ensures zero data loss during quantum-resistant migration protocols.</p>
-</div>
-</div>
-<div class="md:col-span-1 bg-secondary-container/10 rounded-xl p-8 border border-outline-variant/15 flex flex-col justify-center text-center">
-<span class="material-symbols-outlined text-4xl text-secondary mb-3">verified_user</span>
-<h4 class="font-label text-xs uppercase tracking-widest text-on-surface-variant">Audited</h4>
-<p class="font-headline font-bold text-on-surface">SOC2 Ready</p>
-</div>
-<div class="md:col-span-1 bg-surface-container-highest rounded-xl p-8 border border-outline-variant/15 flex flex-col justify-center text-center">
-<span class="material-symbols-outlined text-4xl text-primary mb-3">speed</span>
-<h4 class="font-label text-xs uppercase tracking-widest text-on-surface-variant">Latency</h4>
-<p class="font-headline font-bold text-on-surface">&lt;15ms Overhead</p>
-</div>
-</div>
-</section>
-<!-- Team Section -->
-<section class="mb-32">
-<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-<div>
-<h2 class="text-4xl font-black font-headline tracking-tight text-on-surface mb-2">Team IravoVoid</h2>
-<p class="text-on-surface-variant max-w-lg italic">The collective minds engineering the next generation of security at Kalasalingam Academy.</p>
-</div>
-<div class="px-6 py-4 bg-surface-container-high border border-outline-variant/15 rounded-xl">
-<p class="font-label text-xs text-on-surface-variant uppercase tracking-widest mb-1">Affiliation</p>
-<p class="font-headline font-bold text-primary-fixed-dim">Kalasalingam Academy</p>
-</div>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<!-- Member 1 -->
-<div class="group relative surface-container rounded-xl p-1 overflow-hidden transition-all hover:bg-gradient-to-br from-primary/30 to-secondary/30">
-<div class="bg-surface-container p-6 rounded-[calc(0.5rem-1px)] h-full flex flex-col items-center text-center">
-<div class="w-24 h-24 rounded-full bg-surface-variant mb-4 overflow-hidden ring-2 ring-primary/20 group-hover:ring-primary transition-all">
-<img class="w-full h-full object-cover" data-alt="Professional headshot of a young male software engineer with a neutral background and professional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtBdMxh7eE0K7fnEtF9tzJ4Q8QxmNCNmsDIlG-NU8JWNuGv38L8qPQ0p_mwnF0zbKtCypQXn5LTZlF6l5WxjPhkTRXKVzgFpGBVrKPly8DYLInovCCMhSlhqc4X-VYurQXhkwbEPzd1ISyXxuNvuxj-WxILJ1g8FFGW9ksPcVi9cu5SsVU6T5XhhZyjqoVwAeRPa9cw5HCDWtahG4VGQtdKiXZAfmk-vNClS_vobN1HRMn_l1HpztvkgLvPE1Gr4PSoGt7A4hwRxxR"/>
-</div>
-<h4 class="font-headline font-bold text-on-surface text-lg">Inbathamizhan S</h4>
-<p class="text-primary text-xs font-label tracking-widest uppercase mb-4">Lead Cryptographer</p>
-<div class="flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">terminal</span>
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">share</span>
-</div>
-</div>
-</div>
-<!-- Member 2 -->
-<div class="group relative surface-container rounded-xl p-1 overflow-hidden transition-all hover:bg-gradient-to-br from-primary/30 to-secondary/30">
-<div class="bg-surface-container p-6 rounded-[calc(0.5rem-1px)] h-full flex flex-col items-center text-center">
-<div class="w-24 h-24 rounded-full bg-surface-variant mb-4 overflow-hidden ring-2 ring-primary/20 group-hover:ring-primary transition-all">
-<img class="w-full h-full object-cover" data-alt="Professional headshot of a young male cyber security analyst in business casual attire against a soft-focus office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgcwrM0d7zaD9NPf3oNqJRjpqR4XyyW_azCzixN556wkO3_8S-Izurjq9XKTCS9Qtilj8Oltl5Y-gkMd95b7SrEiDdopgWXDUZqQtaysRxwkhX-iIBql8hhMfjJHnrnf-XgnZ7GRe7SSA7P2FQgwzmmATdv7YFp2BcUoj5BQKmFNlKOy1_L2tNJigmQ2r_HPNk7Ub8axqUTcaLejTfWPFV4T6GCgRhtLH97qs6QowfbxyNnw5tyGR4FxFL424L4-jOeeJa8fMPAjkr"/>
-</div>
-<h4 class="font-headline font-bold text-on-surface text-lg">Niranjan U</h4>
-<p class="text-primary text-xs font-label tracking-widest uppercase mb-4">System Architect</p>
-<div class="flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">terminal</span>
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">share</span>
-</div>
-</div>
-</div>
-<!-- Member 3 -->
-<div class="group relative surface-container rounded-xl p-1 overflow-hidden transition-all hover:bg-gradient-to-br from-primary/30 to-secondary/30">
-<div class="bg-surface-container p-6 rounded-[calc(0.5rem-1px)] h-full flex flex-col items-center text-center">
-<div class="w-24 h-24 rounded-full bg-surface-variant mb-4 overflow-hidden ring-2 ring-primary/20 group-hover:ring-primary transition-all">
-<img class="w-full h-full object-cover" data-alt="Professional headshot of a confident young male researcher with a clean, high-key studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7DtlkaZ9JglOk4o2bc_1WLmwAtHgRe6R__m0c7rTWocd61vdGI2BghkrmIeYjrqg4E15NCTjUHwEkrwrdN2dAE8aGIIIOncPl7f4L9YBVvHkQxj6ruDd7lNqy4PR7ylBOt6ru6mKpRezVa-udm6VjSXzAhkVWjPn_XR-ncoZLHkpl6DuCZ4KqLAI4GpoyuXIxJ4hdDwb6LGYK_XyQD7sVWN1DCz2714NUi5P9_fzFM-Ixi6R8uqJHgTCLSqTpux6UOyQFK8w8B82O"/>
-</div>
-<h4 class="font-headline font-bold text-on-surface text-lg">Vedhan Subramanian</h4>
-<p class="text-primary text-xs font-label tracking-widest uppercase mb-4">Security Researcher</p>
-<div class="flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">terminal</span>
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">share</span>
-</div>
-</div>
-</div>
-<!-- Member 4 -->
-<div class="group relative surface-container rounded-xl p-1 overflow-hidden transition-all hover:bg-gradient-to-br from-primary/30 to-secondary/30">
-<div class="bg-surface-container p-6 rounded-[calc(0.5rem-1px)] h-full flex flex-col items-center text-center">
-<div class="w-24 h-24 rounded-full bg-surface-variant mb-4 overflow-hidden ring-2 ring-primary/20 group-hover:ring-primary transition-all">
-<img class="w-full h-full object-cover" data-alt="Professional headshot of a young male data scientist with glasses, smiling warmly against a blurred tech environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZDrG22wuSnbWKfJMAKnlkfgYDNOkV_aD4TO9bkAfwBkbYmMXcaMWDIHVq51Uev0bkAgTkVpTjjam_9Uw1S6oPcGpyv43CXcwwoWAEcUaN4lUNtP9SzzxWfQEtAL5Hm_0_qCWzEuRLKz3UZdvicR28EQ4fCcj79_wuoH1ZPglpFJrhaFVxLThmxDsT1IJMW9NGuVZUXScwae9ZbK9EPnxO3D7DWlVHMcCjtpxq8JTr967syrBcjizLvLkYdWm8GJRXvoWCjTLWT66I"/>
-</div>
-<h4 class="font-headline font-bold text-on-surface text-lg">Ragul Nagaraj</h4>
-<p class="text-primary text-xs font-label tracking-widest uppercase mb-4">Backend Developer</p>
-<div class="flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">terminal</span>
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">share</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Contact & Community Section -->
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-<div class="glass-card p-10 rounded-xl border border-outline-variant/15">
-<h3 class="text-3xl font-black font-headline mb-6">Establish a Link</h3>
-<form class="space-y-6">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="space-y-2">
-<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant">Identification</label>
-<input class="w-full bg-surface-container-lowest border-outline-variant/20 rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Full Name" type="text"/>
-</div>
-<div class="space-y-2">
-<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant">Neural Address</label>
-<input class="w-full bg-surface-container-lowest border-outline-variant/20 rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="email@quantum.shield" type="email"/>
-</div>
-</div>
-<div class="space-y-2">
-<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant">Mission Brief</label>
-<textarea class="w-full bg-surface-container-lowest border-outline-variant/20 rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="How can we assist in your transition to PQC?" rows="4"></textarea>
-</div>
-<button class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline font-bold rounded-lg shadow-[0_4px_20px_rgba(0,212,255,0.3)] hover:shadow-[0_4px_30px_rgba(0,212,255,0.5)] transition-all active:scale-95">Initiate Protocol</button>
-</form>
-</div>
-<div class="flex flex-col justify-between">
-<div>
-<h3 class="text-3xl font-black font-headline mb-6">Join the Collective</h3>
-<p class="text-on-surface-variant mb-8 leading-relaxed">Stay synchronized with our latest developments in post-quantum research and implementation tools.</p>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-<a class="flex items-center p-6 bg-surface-container-high rounded-xl border border-outline-variant/15 hover:bg-surface-container-highest transition-all group" href="#">
-<span class="material-symbols-outlined text-3xl text-primary mr-4 group-hover:scale-110 transition-transform">code</span>
-<div>
-<h4 class="font-bold text-on-surface">GitHub Forge</h4>
-<p class="text-xs text-on-surface-variant">Open Source Repos</p>
-</div>
-</a>
-<a class="flex items-center p-6 bg-surface-container-high rounded-xl border border-outline-variant/15 hover:bg-surface-container-highest transition-all group" href="#">
-<span class="material-symbols-outlined text-3xl text-secondary mr-4 group-hover:scale-110 transition-transform">forum</span>
-<div>
-<h4 class="font-bold text-on-surface">Discord Relay</h4>
-<p class="text-xs text-on-surface-variant">Real-time Support</p>
-</div>
-</a>
-<a class="flex items-center p-6 bg-surface-container-high rounded-xl border border-outline-variant/15 hover:bg-surface-container-highest transition-all group" href="#">
-<span class="material-symbols-outlined text-3xl text-tertiary mr-4 group-hover:scale-110 transition-transform">newspaper</span>
-<div>
-<h4 class="font-bold text-on-surface">Newsletter</h4>
-<p class="text-xs text-on-surface-variant">Monthly Intelligence</p>
-</div>
-</a>
-<a class="flex items-center p-6 bg-surface-container-high rounded-xl border border-outline-variant/15 hover:bg-surface-container-highest transition-all group" href="#">
-<span class="material-symbols-outlined text-3xl text-on-surface-variant mr-4 group-hover:scale-110 transition-transform">public</span>
-<div>
-<h4 class="font-bold text-on-surface">Academy Blog</h4>
-<p class="text-xs text-on-surface-variant">Academic Insights</p>
-</div>
-</a>
-</div>
-</div>
-<div class="mt-8 p-6 glass-card rounded-xl border-l-4 border-primary">
-<p class="text-sm font-label text-on-surface italic">"The only way to predict the future of security is to build its quantum-resistant foundations today."</p>
-</div>
-</div>
-</section>
+<main class="pt-32 pb-20 px-8 max-w-4xl mx-auto">
+    <div class="p-12 text-center bg-surface-container-low rounded-3xl border border-outline-variant/10 shadow-2xl">
+        <span class="material-symbols-outlined text-6xl text-primary/80 mb-6">info</span>
+        <h1 class="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF] font-headline mb-6">About QuantumGuard</h1>
+        <p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+            QuantumGuard is an advanced post-quantum cryptography (PQC) readiness assessment platform. 
+            Designed for enterprise security teams, it provides real-time TLS scanning, vulnerability detection, and strategic insights to protect your infrastructure against "Harvest Now, Decrypt Later" quantum threats.
+        </p>
+        <p class="text-on-surface-variant text-lg leading-relaxed">
+            By leveraging strict NIST compliance standards and integrating powerful AI-driven remediation advisors, 
+            QuantumGuard ensures that your organization is ready for the post-quantum era.
+        </p>
+    </div>
 </main>
-<!-- Footer -->
-<footer class="bg-[#0D1C32] w-full py-12 border-t border-[#3C494E]/15">
-<div class="flex flex-col md:flex-row justify-between items-center px-12 w-full max-w-7xl mx-auto gap-8">
-<div class="font-['JetBrains_Mono'] text-xs tracking-widest uppercase text-[#D6E3FF]/50">
-                © 2026 PSB Hackathon — QuantumGuard by IravoVoid
-            </div>
-<div class="flex space-x-8 font-['JetBrains_Mono'] text-xs tracking-widest uppercase">
-<a class="text-[#D6E3FF]/40 hover:text-[#A8E8FF] transition-colors" href="#">Privacy Policy</a>
-<a class="text-[#D6E3FF]/40 hover:text-[#A8E8FF] transition-colors" href="#">Terms of Service</a>
-<a class="text-[#D6E3FF]/40 hover:text-[#A8E8FF] transition-colors" href="#">Security Disclosure</a>
-</div>
-<div class="text-[#00D4FF] font-black text-xl tracking-tighter">
-                QG
-            </div>
-</div>
-</footer>
+
 <script src="ui-utils.js"></script>
-</body></html>
+</body>
+</html>

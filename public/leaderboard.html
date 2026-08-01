@@ -4,7 +4,6 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>QuantumGuard | Global Readiness Leaderboard</title>
-    <meta name="description" content="QuantumGuard Leaderboard - Compare quantum readiness scores across organizations.">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="tailwind-config.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -24,24 +23,50 @@
     </style>
 </head>
 <body class="bg-surface text-on-surface min-h-screen flex flex-col font-sans selection:bg-primary/30 selection:text-primary">
-    <nav class="sticky top-0 z-50 bg-[#041329]/80 backdrop-blur-md border-b border-outline-variant/20">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 group">
-                <span class="material-symbols-outlined text-primary text-2xl group-hover:rotate-180 transition-transform duration-700">security</span>
-                <span class="font-headline font-bold tracking-tight text-lg">QuantumGuard</span>
-            </a>
-            <div class="hidden md:flex items-center gap-6">
-                <a href="tools.html" class="text-sm font-bold text-on-surface-variant hover:text-primary transition-colors">TOOLS</a>
-                <a href="leaderboard.html" class="text-sm font-bold text-primary transition-colors">LEADERBOARD</a>
-                <a href="compliance.html" class="text-sm font-bold text-on-surface-variant hover:text-primary transition-colors">COMPLIANCE</a>
-                <a href="docs.html" class="text-sm font-bold text-on-surface-variant hover:text-primary transition-colors">DOCS</a>
-                <a href="about.html" class="text-sm font-bold text-on-surface-variant hover:text-primary transition-colors">DOCS</a>
-            </div>
-            <a href="tools.html" class="bg-primary/10 text-primary border border-primary/20 px-4 py-1.5 rounded-full text-xs font-bold hover:bg-primary hover:text-on-primary transition-all">SCAN NOW</a>
+    <!-- TopNavBar Standardized -->
+<nav class="fixed top-0 w-full z-50 bg-[#041329]/80 backdrop-blur-xl border-b border-[#3C494E]/15 shadow-[0_8px_32px_0_rgba(0,212,255,0.08)] flex justify-between items-center px-4 md:px-8 h-20">
+    <div class="flex items-center gap-8">
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF] font-headline flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#00D4FF] hidden sm:block" style="font-variation-settings: 'FILL' 1;">security</span>
+            QuantumGuard
+        </a>
+        <div class="hidden lg:flex gap-6 items-center font-['Inter'] tracking-tight font-medium text-sm">
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="index.html">Home</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="quick-assessment.html">Assessment</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="results.html">Results</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="compliance.html">Compliance</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="tools.html">Tools</a>
+            <a class="text-[#00D4FF] border-b-2 border-[#00D4FF] pb-1 font-bold transition-colors duration-300" href="leaderboard.html">Leaderboard</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="docs.html">Docs</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="about.html">About</a>
         </div>
-    </nav>
+    </div>
+    <div class="flex items-center gap-4">
+        <button class="hidden sm:block p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span class="material-symbols-outlined text-[#00D4FF]">notifications</span></button>
+        <button class="hidden sm:block p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span class="material-symbols-outlined text-[#00D4FF]">account_circle</span></button>
+        <button id="mobileMenuBtn" class="lg:hidden p-2 hover:bg-[#27354C]/50 rounded-lg transition-all" aria-label="Open menu">
+            <span class="material-symbols-outlined text-[#D6E3FF]">menu</span>
+        </button>
+    </div>
+</nav>
+<!-- Mobile Menu Overlay -->
+<div id="mobileOverlay" class="mobile-menu-overlay hidden fixed inset-0 bg-[#041329]/80 backdrop-blur-sm z-[51]"></div>
+<div id="mobileDrawer" class="mobile-menu-drawer fixed top-0 right-0 h-full w-64 bg-surface-container shadow-2xl z-[52] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-4">
+    <div class="flex justify-between items-center mb-4">
+        <span class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF]">Menu</span>
+        <button id="mobileCloseBtn" class="p-2 hover:bg-[#27354C]/50 rounded-lg"><span class="material-symbols-outlined text-[#D6E3FF]">close</span></button>
+    </div>
+    <a href="index.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">home</span> Home</a>
+    <a href="quick-assessment.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">quiz</span> Assessment</a>
+    <a href="results.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">assessment</span> Results</a>
+    <a href="compliance.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">verified</span> Compliance</a>
+    <a href="tools.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">build</span> Tools</a>
+    <a href="leaderboard.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">leaderboard</span> Leaderboard</a>
+    <a href="docs.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">description</span> Docs</a>
+    <a href="about.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">info</span> About</a>
+</div>
 
-    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 relative">
+    <main class="pt-24 flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 relative">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
             <div>
                 <h1 class="text-3xl md:text-4xl font-black font-headline tracking-tight mb-2">Global Readiness</h1>
@@ -50,7 +75,7 @@
             <div class="flex items-center gap-4 w-full md:w-auto">
                 <div class="relative w-full md:w-64">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50">search</span>
-                    <input type="text" id="searchInput" aria-label="Search leaderboard" placeholder="Search domains..." class="w-full bg-surface-container-high border border-outline-variant/20 rounded-lg pl-10 pr-4 py-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all text-on-surface">
+                    <input type="text" id="searchInput" placeholder="Search domains..." class="w-full bg-surface-container-high border border-outline-variant/20 rounded-lg pl-10 pr-4 py-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all text-on-surface">
                 </div>
             </div>
         </div>
@@ -324,16 +349,9 @@
         window.closeDetailModal = function() {
             document.getElementById('detailModal').style.display = 'none';
         };
+
         fetchLeaderboard();
         setInterval(fetchLeaderboard, 10000); // refresh every 10s
     </script>
-<footer class="bg-[#0D1C32] border-t border-[#3C494E]/15 w-full py-12 flex flex-col md:flex-row justify-between items-center px-12">
-  <span class="font-['JetBrains_Mono'] text-xs tracking-widest uppercase text-[#D6E3FF]/50">© 2026 PSB Hackathon — QuantumGuard by IravoVoid</span>
-  <div class="flex gap-8 mt-6 md:mt-0">
-    <a class="font-['JetBrains_Mono'] text-xs tracking-widest uppercase text-[#D6E3FF]/40 hover:text-[#A8E8FF] transition-colors" href="#">Privacy Policy</a>
-    <a class="font-['JetBrains_Mono'] text-xs tracking-widest uppercase text-[#D6E3FF]/40 hover:text-[#A8E8FF] transition-colors" href="#">Terms of Service</a>
-    <a class="font-['JetBrains_Mono'] text-xs tracking-widest uppercase text-[#D6E3FF]/40 hover:text-[#A8E8FF] transition-colors" href="#">Security Disclosure</a>
-  </div>
-</footer>
 </body>
 </html>

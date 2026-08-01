@@ -1,7 +1,7 @@
 # 9. TLS Scanner Deep Dive
 
 ## 9.1 Data Collection Methodology
-The TLS Scanner is completely custom-built using the low-level Node.js `tls` socket module. It does not rely on third-party APIs. 
+The TLS Scanner is completely custom-built using the low-level Node.js `tls` socket module. It does not rely on third-party APIs (like Qualys SSLLabs). 
 
 **How it gathers data:**
 1. **Protocol Probing**: It iteratively opens TCP sockets and performs TLS handshakes, forcing specific protocol versions (`TLSv1.0`, `TLSv1.1`, `TLSv1.2`, `TLSv1.3`).

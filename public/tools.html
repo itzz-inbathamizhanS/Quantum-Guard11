@@ -170,29 +170,48 @@
 <body
   class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
   <!-- TopNavBar -->
-  <nav
-    class="fixed top-0 w-full z-50 bg-[#041329]/60 backdrop-blur-xl border-b border-[#3C494E]/15 shadow-[0_8px_32px_0_rgba(0,212,255,0.08)] flex justify-between items-center px-8 h-20 max-w-none">
+  <!-- TopNavBar Standardized -->
+<nav class="fixed top-0 w-full z-50 bg-[#041329]/80 backdrop-blur-xl border-b border-[#3C494E]/15 shadow-[0_8px_32px_0_rgba(0,212,255,0.08)] flex justify-between items-center px-4 md:px-8 h-20">
     <div class="flex items-center gap-8">
-      <a href="index.html"
-        class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF] font-headline">QuantumGuard</a>
-      <div class="hidden md:flex gap-6 items-center">
-        <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300"
-          href="quick-assessment.html">Assessment</a>
-        <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="results.html">Results</a>
-        <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300"
-          href="compliance.html">Compliance</a>
-        <a class="text-[#00D4FF] border-b-2 border-[#00D4FF] pb-1 font-bold" href="tools.html">Scanner</a>
-        <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="leaderboard.html">Leaderboard</a>
-        <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="docs.html">Docs</a>
-      </div>
+        <a href="index.html" class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF] font-headline flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#00D4FF] hidden sm:block" style="font-variation-settings: 'FILL' 1;">security</span>
+            QuantumGuard
+        </a>
+        <div class="hidden lg:flex gap-6 items-center font-['Inter'] tracking-tight font-medium text-sm">
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="index.html">Home</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="quick-assessment.html">Assessment</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="results.html">Results</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="compliance.html">Compliance</a>
+            <a class="text-[#00D4FF] border-b-2 border-[#00D4FF] pb-1 font-bold transition-colors duration-300" href="tools.html">Tools</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="leaderboard.html">Leaderboard</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="docs.html">Docs</a>
+            <a class="text-[#D6E3FF]/70 hover:text-[#00D4FF] transition-colors duration-300" href="about.html">About</a>
+        </div>
     </div>
     <div class="flex items-center gap-4">
-      <button class="p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span
-          class="material-symbols-outlined text-[#00D4FF]">notifications</span></button>
-      <button class="p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span
-          class="material-symbols-outlined text-[#00D4FF]">account_circle</span></button>
+        <button class="hidden sm:block p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span class="material-symbols-outlined text-[#00D4FF]">notifications</span></button>
+        <button class="hidden sm:block p-2 rounded-full hover:bg-[#27354C]/50 transition-all"><span class="material-symbols-outlined text-[#00D4FF]">account_circle</span></button>
+        <button id="mobileMenuBtn" class="lg:hidden p-2 hover:bg-[#27354C]/50 rounded-lg transition-all" aria-label="Open menu">
+            <span class="material-symbols-outlined text-[#D6E3FF]">menu</span>
+        </button>
     </div>
-  </nav>
+</nav>
+<!-- Mobile Menu Overlay -->
+<div id="mobileOverlay" class="mobile-menu-overlay hidden fixed inset-0 bg-[#041329]/80 backdrop-blur-sm z-[51]"></div>
+<div id="mobileDrawer" class="mobile-menu-drawer fixed top-0 right-0 h-full w-64 bg-surface-container shadow-2xl z-[52] transform translate-x-full transition-transform duration-300 p-6 flex flex-col gap-4">
+    <div class="flex justify-between items-center mb-4">
+        <span class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#A8E8FF] to-[#00D4FF]">Menu</span>
+        <button id="mobileCloseBtn" class="p-2 hover:bg-[#27354C]/50 rounded-lg"><span class="material-symbols-outlined text-[#D6E3FF]">close</span></button>
+    </div>
+    <a href="index.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">home</span> Home</a>
+    <a href="quick-assessment.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">quiz</span> Assessment</a>
+    <a href="results.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">assessment</span> Results</a>
+    <a href="compliance.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">verified</span> Compliance</a>
+    <a href="tools.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">build</span> Tools</a>
+    <a href="leaderboard.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">leaderboard</span> Leaderboard</a>
+    <a href="docs.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">description</span> Docs</a>
+    <a href="about.html" class="flex items-center gap-3 text-[#D6E3FF] hover:text-[#00D4FF] py-2"><span class="material-symbols-outlined">info</span> About</a>
+</div>
 
   <!-- AI Chat Advisor Floating Button -->
   <div class="fixed bottom-8 right-8 z-[100] group">

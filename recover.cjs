@@ -6,13 +6,7 @@ const targetTime = new Date('2026-08-01T22:15:00Z'); // Approx 3:45 AM local (+5
 
 const lines = fs.readFileSync(logPath, 'utf8').split('\n');
 
-const allowedFiles = [
-    'a:\\Quantum-Guard\\public\\tools.html',
-    'a:\\Quantum-Guard\\public\\scanner-engine.js',
-    'a:\\Quantum-Guard\\src\\scanner.js',
-    'a:\\Quantum-Guard\\src\\server.js',
-    'a:\\Quantum-Guard\\public\\docs.html'
-];
+// Allow all files
 
 for (const line of lines) {
     if (!line.trim()) continue;
@@ -43,8 +37,8 @@ for (const line of lines) {
                 } catch(e) { continue; }
             }
             
-            const targetFile = parsedArgs.TargetFile;
-            if (targetFile && allowedFiles.some(f => targetFile.toLowerCase() === f.toLowerCase())) {
+            const targetFile = parsedArgs.TargetFile || parsedArgs.targetFile;
+            if (targetFile && targetFile.toLowerCase().includes('quantum-guard')) {
                 const filePath = targetFile.replace('a:\\Quantum-Guard\\', './');
                 
                 if (name.includes('write_to_file')) {
