@@ -55,50 +55,8 @@
       }
 
       50% {
-        opacity: 0.5;      const printWindow = window.open('', '_blank');
-      if (!printWindow) { 
-        alert('Please allow popups to generate the PDF report.'); 
-        return; 
+        opacity: 0.5;
       }
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>QuantumGuard_CBOM_${new Date().getTime()}</title>
-            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Grotesk:wght@700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-            <style>
-              body { 
-                margin: 0; 
-                background: #020817; 
-                display: flex; 
-                justify-content: center; 
-                padding: 40px; 
-                min-height: 100vh;
-              }
-              .page-container { 
-                box-shadow: 0 0 50px rgba(0,0,0,0.8); 
-                transform-origin: top center;
-              }
-              @media print {
-                body { background: #041329 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; display: block; }
-                .page-container { box-shadow: none !important; }
-                .no-print { display: none !important; }
-              }
-            </style>
-          </head>
-          <body>
-            <div class="no-print" style="position:fixed;top:20px;right:20px;z-index:999;">
-              <button onclick="window.print()" style="background:#00DBE9;color:#041329;border:none;padding:12px 24px;font-weight:900;font-family:'Space Grotesk',sans-serif;font-size:14px;cursor:pointer;letter-spacing:2px;box-shadow:0 0 15px rgba(0,219,233,0.3);">PRINT / SAVE PDF</button>
-            </div>
-            <div class="page-container">
-              ${html}
-            </div>
-            <script>
-              window.onload = () => { setTimeout(() => { window.print(); }, 500); };
-            </script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
     }
 
     .finding-row {
@@ -113,50 +71,8 @@
 
       to {
         opacity: 1;
-        transform: translateX(0);      const printWindow = window.open('', '_blank');
-      if (!printWindow) { 
-        alert('Please allow popups to generate the PDF report.'); 
-        return; 
+        transform: translateX(0);
       }
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>QuantumGuard_CBOM_${new Date().getTime()}</title>
-            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Grotesk:wght@700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-            <style>
-              body { 
-                margin: 0; 
-                background: #020817; 
-                display: flex; 
-                justify-content: center; 
-                padding: 40px; 
-                min-height: 100vh;
-              }
-              .page-container { 
-                box-shadow: 0 0 50px rgba(0,0,0,0.8); 
-                transform-origin: top center;
-              }
-              @media print {
-                body { background: #041329 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; display: block; }
-                .page-container { box-shadow: none !important; }
-                .no-print { display: none !important; }
-              }
-            </style>
-          </head>
-          <body>
-            <div class="no-print" style="position:fixed;top:20px;right:20px;z-index:999;">
-              <button onclick="window.print()" style="background:#00DBE9;color:#041329;border:none;padding:12px 24px;font-weight:900;font-family:'Space Grotesk',sans-serif;font-size:14px;cursor:pointer;letter-spacing:2px;box-shadow:0 0 15px rgba(0,219,233,0.3);">PRINT / SAVE PDF</button>
-            </div>
-            <div class="page-container">
-              ${html}
-            </div>
-            <script>
-              window.onload = () => { setTimeout(() => { window.print(); }, 500); };
-            </script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
     }
 
     .tab-active {
@@ -1300,6 +1216,10 @@
       const reportHtml = generateTacticalReportHTML(window._lastCBOM);
 
       const printWindow = window.open('', '_blank');
+      if (!printWindow) { 
+        alert('Please allow popups to generate the PDF report.'); 
+        return; 
+      }
       printWindow.document.write(`
         <html>
           <head>
